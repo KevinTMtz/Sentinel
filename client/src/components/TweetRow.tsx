@@ -8,14 +8,22 @@ const rowStyle = {
 };
 
 interface TweetProps {
-  text: String;
+  text: string;
+  sentiment: number;
 }
 
 const TweetRow = (props: TweetProps) => {
   return (
     <div style={rowStyle}>
       <p>{props.text}</p>
-      <p style={{ fontWeight: 'bold' }}>Sentiment: {'Positive'}</p>
+      <p style={{ fontWeight: 'bold' }}>
+        Sentiment:{' '}
+        {props.sentiment === 0
+          ? 'Neutral'
+          : props.sentiment > 0
+          ? 'Positive'
+          : 'Negative'}
+      </p>
     </div>
   );
 };
