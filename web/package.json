@@ -19,6 +19,7 @@
     "typescript": "^4.6.2"
   },
   "scripts": {
-    "devStart": "ts-node-dev index.ts"
+    "devStart": "ts-node-dev index.ts",
+    "heroku-postbuild": "yarn install && cd client && yarn install && yarn build"
   }
 }

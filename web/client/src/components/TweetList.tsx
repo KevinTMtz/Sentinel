@@ -30,7 +30,6 @@ const TweetList = () => {
     axios('/tweets/search', {
       method: 'GET',
       responseType: 'json',
-      baseURL: 'http://localhost:3001',
     }).then(
       (res: any) => {
         setTweets(res.data.statuses);
