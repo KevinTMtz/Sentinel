@@ -3,9 +3,10 @@ import path from 'path';
 import cors from 'cors';
 
 import tweetsRouter from './routers/tweets';
+import SERVER from './config/config';
 
 const app = express();
-const port = 5000;
+const port = SERVER.port;
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
@@ -13,12 +14,8 @@ app.use(express.json());
 // Tweets router
 app.use('/tweets', tweetsRouter);
 
-app.get('/', (_: Request, res: Response) => {
-  res.send('Server is running!');
-});
-
 // Serve static assets if in production
-if (process.env.NODE_ENV === 'production') {
+if (SERVER.env === 'production') {
   // Set static folder
   app.use(express.static('client/build'));
 
