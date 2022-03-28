@@ -7,7 +7,7 @@ import { getFirestore, doc, setDoc } from 'firebase/firestore/lite';
 
 import TweetRow from './TweetRow';
 
-dotenv.config({ path: '../../.env' });
+dotenv.config();
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY as string,
@@ -30,7 +30,6 @@ const TweetList = () => {
     axios('/tweets/search', {
       method: 'GET',
       responseType: 'json',
-      baseURL: 'http://localhost:3001',
     }).then(
       (res: any) => {
         setTweets(res.data.statuses);

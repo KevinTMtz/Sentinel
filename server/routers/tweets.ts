@@ -2,18 +2,11 @@ import { Request, Response, Router } from 'express';
 import Twitter from 'twitter';
 import dotenv from 'dotenv';
 
-dotenv.config();
+import { TWITTER } from '../config/config';
 
 const router = Router();
 
-const twitter = {
-  consumer_key: process.env.TWITTER_APP_API_KEY as string,
-  consumer_secret: process.env.TWITTER_APP_API_SECRET as string,
-  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY as string,
-  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET as string,
-};
-
-var twitterClient = new Twitter(twitter);
+var twitterClient = new Twitter(TWITTER);
 
 router.get('/search', async (req: Request, res: Response) => {
   twitterClient
