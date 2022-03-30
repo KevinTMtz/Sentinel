@@ -1,4 +1,5 @@
 import React from 'react';
+import exp from "constants";
 
 const rowStyle = {
   border: '1px solid black',
@@ -7,7 +8,7 @@ const rowStyle = {
   borderRadius: '8px',
 };
 
-interface TweetProps {
+export interface TweetProps {
   text: string;
   sentiment: number;
 }

@@ -5,7 +5,8 @@ import dotenv from 'dotenv';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc } from 'firebase/firestore/lite';
 
-import TweetRow from './TweetRow';
+import TweetRow, {TweetProps} from './TweetRow';
+import {PieChart} from "./PieChart";
 
 dotenv.config();
 
@@ -25,7 +26,16 @@ const TweetList = () => {
   const sentiment = new Sentiment();
 
   const [tweets, setTweets] = useState<any>();
+  const [processedTweets, setProcessedTweets] = useState<[TweetProps]>()
 
+  const processTweets = (tweets: [any]) => {
+    if(tweets) {
+      // @ts-ignore
+      setProcessedTweets(tweets.map((tweet: any) => {
+        return {text: tweet.text, sentiment: sentiment.analyze(tweet.text).score}
+      }))
+    }
+  }
   const getTweets = async () => {
     axios('/tweets/search', {
       method: 'GET',
@@ -53,6 +63,10 @@ const TweetList = () => {
     getTweets();
   }, []);
 
+  useEffect(() => {
+    processTweets(tweets)
+  }, [tweets])
+
   return (
     <div>
       <h3>Tweet List</h3>
@@ -64,6 +78,8 @@ const TweetList = () => {
             key={tweet.id}
           />
         ))}
+      <h3>Pie chart</h3>
+      <PieChart tweets={processedTweets}/>
     </div>
   );
 };
