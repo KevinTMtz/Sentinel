@@ -68,19 +68,22 @@ const TweetList = () => {
   }, [tweets])
 
   return (
-    <div>
-      <h3>Tweet List</h3>
-      {tweets &&
-        tweets.map((tweet: any) => (
-          <TweetRow
-            text={tweet.text}
-            sentiment={sentiment.analyze(tweet.text).score}
-            key={tweet.id}
-          />
-        ))}
-      <h3>Pie chart</h3>
-      <PieChart tweets={processedTweets}/>
-    </div>
+      <div className="inline-container">
+        <div id="tweet-list">
+          <h3>Tweet List</h3>
+          {tweets &&
+              tweets.map((tweet: any) => (
+                  <TweetRow
+                      text={tweet.text}
+                      sentiment={sentiment.analyze(tweet.text).score}
+                      key={tweet.id}/>
+              ))}
+        </div>
+        <div className="chart">
+          <h3>Pie chart</h3>
+          <PieChart tweets={processedTweets}/>
+        </div>
+      </div>
   );
 };
 
