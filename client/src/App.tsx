@@ -10,8 +10,9 @@ import {
 
 import TweetList from './components/TweetList';
 import LandingPage from './containers/LandingPage';
-import Auth from './components/Auth';
 import RequireAuth from './components/RequireAuth';
+import Login from './containers/auth/Login';
+import Register from './containers/auth/Register';
 
 const appStyle = {
   padding: '16px 32px',
@@ -29,8 +30,8 @@ const App = () => {
             Sentinel
           </Typography>
 
-          {location.pathname !== '/auth' && true && (
-            <Button color='inherit' onClick={() => navigate('auth')}>
+          {location.pathname !== ('/register' || '/login') && true && (
+            <Button color='inherit' onClick={() => navigate('login')}>
               Login
             </Button>
           )}
@@ -41,7 +42,8 @@ const App = () => {
         <Routes>
           <Route path='/'>
             <Route index element={<LandingPage />} />
-            <Route path='auth' element={<Auth />} />
+            <Route path='login' element={<Login />} />
+            <Route path='register' element={<Register />} />
 
             <Route
               path='search'
