@@ -93,7 +93,11 @@ const AuthForm: React.FC<AuthFormProps> = (props: AuthFormProps) => {
               >
                 Sign in
               </Button>
-              <Button variant='contained' onClick={() => navigate('/register')}>
+              <Button
+                variant='outlined'
+                color='secondary'
+                onClick={() => navigate('/register')}
+              >
                 Don't have an account? Sign up
               </Button>
             </>
@@ -107,7 +111,11 @@ const AuthForm: React.FC<AuthFormProps> = (props: AuthFormProps) => {
               >
                 Sign up
               </Button>
-              <Button variant='contained' onClick={() => navigate('/login')}>
+              <Button
+                variant='outlined'
+                color='secondary'
+                onClick={() => navigate('/login')}
+              >
                 Already have an account? Sign in
               </Button>
             </>

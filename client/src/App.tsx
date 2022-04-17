@@ -7,18 +7,23 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
 
 import TweetList from './components/TweetList';
 import LandingPage from './containers/LandingPage';
-import RequireAuth from './components/RequireAuth';
+import RequireAuth from './components/auth/RequireAuth';
 import Login from './containers/auth/Login';
 import Register from './containers/auth/Register';
+import { firebaseAuth } from './config/firebase';
 
 const appStyle = {
   padding: '16px 32px',
 };
 
 const App = () => {
+  // TODO
+  console.log(firebaseAuth.currentUser);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,11 +35,30 @@ const App = () => {
             Sentinel
           </Typography>
 
-          {location.pathname !== ('/register' || '/login') && true && (
-            <Button color='inherit' onClick={() => navigate('login')}>
-              Login
-            </Button>
-          )}
+          {location.pathname !== '/register' &&
+            location.pathname !== '/login' &&
+            (firebaseAuth.currentUser ? (
+              <Button
+                color='inherit'
+                onClick={() => {
+                  signOut(firebaseAuth)
+                    .then(() => {
+                      navigate('/');
+                    })
+                    .catch((error) => {
+                      console.log(
+                        'Error: ' + error.code + ', Message: ' + error.message,
+                      );
+                    });
+                }}
+              >
+                Log out
+              </Button>
+            ) : (
+              <Button color='inherit' onClick={() => navigate('login')}>
+                Login
+              </Button>
+            ))}
         </Toolbar>
       </AppBar>
 

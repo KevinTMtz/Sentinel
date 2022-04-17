@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import AuthForm from '../../components/auth/AuthForm';
 import SnackBar from '../../components/utils/Snackbar';
 import Spinner from '../../components/utils/Spinner';
+import { firebaseAuth } from '../../config/firebase';
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [warning, setWarning] = useState<string>();
@@ -26,9 +31,16 @@ const Login: React.FC = () => {
       handleClick();
       return;
     }
+
     setIsAuth(true);
 
-    // TODO : Login call to firebase
+    signInWithEmailAndPassword(firebaseAuth, email, password)
+      .then((userCredential) => {
+        navigate('search');
+      })
+      .catch((error) => {
+        console.log('Error: ' + error.code + ', Message: ' + error.message);
+      });
   };
 
   return (
