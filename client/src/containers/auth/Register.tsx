@@ -48,7 +48,7 @@ const Register: React.FC = () => {
 
     createUserWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential) => {
-        navigate('search');
+        navigate('/search');
       })
       .catch((error) => {
         console.log('Error: ' + error.code + ', Message: ' + error.message);

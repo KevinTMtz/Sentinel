@@ -1,16 +1,18 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { firebaseAuth } from '../../config/firebase';
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
-  const location = useLocation();
+  const navigate = useNavigate();
 
-  // TODO
-  console.log('Require: ' + firebaseAuth.currentUser);
-
-  if (!firebaseAuth.currentUser)
-    return <Navigate to='/login' state={{ from: location }} replace />;
+  useEffect(() => {
+    firebaseAuth.onAuthStateChanged((user) => {
+      if (!user) {
+        navigate('/login');
+      }
+    });
+  });
 
   return children;
 };

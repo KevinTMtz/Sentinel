@@ -1,13 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
-import { signOut } from 'firebase/auth';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { signOut, User } from 'firebase/auth';
 
 import TweetList from './components/TweetList';
 import LandingPage from './containers/LandingPage';
@@ -21,8 +15,11 @@ const appStyle = {
 };
 
 const App = () => {
-  // TODO
-  console.log(firebaseAuth.currentUser);
+  const [currentUser, setCurrentUser] = useState<User | null>();
+
+  firebaseAuth.onAuthStateChanged((user) => {
+    setCurrentUser(user);
+  });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,7 +34,7 @@ const App = () => {
 
           {location.pathname !== '/register' &&
             location.pathname !== '/login' &&
-            (firebaseAuth.currentUser ? (
+            (currentUser ? (
               <Button
                 color='inherit'
                 onClick={() => {
@@ -55,7 +52,7 @@ const App = () => {
                 Log out
               </Button>
             ) : (
-              <Button color='inherit' onClick={() => navigate('login')}>
+              <Button color='inherit' onClick={() => navigate('/login')}>
                 Login
               </Button>
             ))}
@@ -78,7 +75,7 @@ const App = () => {
               }
             />
 
-            <Route path='*' element={<Navigate to='/' replace />} />
+            {/* <Route path='*' element={<Navigate to='/' replace />} /> */}
           </Route>
         </Routes>
       </div>

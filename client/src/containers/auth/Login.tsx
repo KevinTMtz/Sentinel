@@ -36,7 +36,7 @@ const Login: React.FC = () => {
 
     signInWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential) => {
-        navigate('search');
+        navigate('/search');
       })
       .catch((error) => {
         console.log('Error: ' + error.code + ', Message: ' + error.message);
