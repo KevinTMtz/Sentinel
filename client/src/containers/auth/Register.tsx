@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  User,
+} from 'firebase/auth';
 
 import AuthForm from '../../components/auth/AuthForm';
 import SnackBar from '../../components/utils/Snackbar';
@@ -48,7 +52,15 @@ const Register: React.FC = () => {
 
     createUserWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential) => {
-        navigate('/search');
+        updateProfile(firebaseAuth.currentUser as User, {
+          displayName: name,
+        })
+          .then(() => {
+            navigate('/search');
+          })
+          .catch((error) => {
+            console.log('Error: ' + error.code + ', Message: ' + error.message);
+          });
       })
       .catch((error) => {
         console.log('Error: ' + error.code + ', Message: ' + error.message);
