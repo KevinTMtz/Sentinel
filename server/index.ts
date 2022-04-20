@@ -15,6 +15,14 @@ app.use(express.static('../client/build'));
 // Tweets router
 app.use('/tweets', tweetsRouter);
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'), (err) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
 });

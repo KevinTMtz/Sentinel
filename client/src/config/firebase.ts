@@ -1,4 +1,7 @@
 import dotenv from 'dotenv';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore/lite';
 
 dotenv.config();
 
@@ -23,3 +26,10 @@ export const firebaseConfig = {
   messagingSenderId: MESSAGING_SENDER_ID,
   appId: APP_ID,
 };
+
+const firebaseApp = initializeApp(firebaseConfig);
+
+export default firebaseApp;
+
+export const firebaseAuth = getAuth(firebaseApp);
+export const firestore = getFirestore(firebaseApp);
