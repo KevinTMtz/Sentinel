@@ -25,6 +25,7 @@ import Register from './containers/auth/Register';
 import { firebaseAuth } from './config/firebase';
 import { AccountCircle } from '@mui/icons-material';
 import UserAccount from './containers/account/UserAccount';
+import SearchBar from "./components/SearchBar";
 
 const appStyle = {
   padding: '16px 32px',
@@ -142,7 +143,10 @@ const App = () => {
               path='search'
               element={
                 <RequireAuth>
-                  <TweetList />
+                  <>
+                    <SearchBar/>
+                    <TweetList />
+                  </>
                 </RequireAuth>
               }
             />
