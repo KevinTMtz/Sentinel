@@ -1,10 +1,11 @@
 import dotenv from 'dotenv';
 import { Request, Response, Router } from 'express';
 import { body, validationResult } from 'express-validator';
-import Twitter, { ResponseData } from 'twitter';
+import Twitter from 'twitter';
 import Sentiment from 'sentiment';
 
 import { TWITTER } from '../config/config';
+import getReport from '../functions/getReport';
 
 const sentiment = new Sentiment();
 const router = Router();
@@ -26,7 +27,6 @@ router.get(
     twitterClient
       .get('search/tweets', {
         q: topic,
-        // TODO:
         since,
         until,
         result_type: 'mixed',
@@ -57,7 +57,9 @@ router.get(
             };
           },
         );
-        return res.status(200).json({ length: tweets.length, tweets });
+        return res.status(200).json({
+          report: getReport(tweets),
+        });
       })
       .catch((err) => {
         return res.status(500).json({ message: err.message, err });
