@@ -11,6 +11,7 @@
     "@types/twitter": "^1.7.1",
     "cors": "^2.8.5",
     "express": "^4.17.3",
+    "express-validator": "^6.14.0",
     "sentiment": "^5.0.2",
     "ts-node-dev": "^1.1.8",
     "twitter": "^1.7.1"
