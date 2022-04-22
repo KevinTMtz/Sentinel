@@ -1,6 +1,7 @@
 import {Container, IconButton, TextField} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {useState} from "react";
+import {searchTweets} from "./TwitterAPI/TweetSearch";
 interface searchProps {
     searchText: string
 }
@@ -16,16 +17,18 @@ const wideSearchBar = {
     width: "70vw"
 }
 
+interface SearchBarProps {
+    callback: any
+}
 
-
-
-const SearchBar = () => {
+const SearchBar = (searchBarProps: SearchBarProps) => {
     const [searchText, setSearchText] = useState("");
 
     const search = (props : searchProps) => {
-        console.log(props.searchText)
+        searchTweets({keyword:props.searchText, location:undefined, date:undefined}, searchBarProps.callback);
         clearSearchField()
     }
+
 
     const clearSearchField = () => {
         setSearchText("")
