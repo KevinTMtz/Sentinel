@@ -17,7 +17,7 @@ router.get('/search', async (req: Request, res: Response) => {
     })
     .then((data) => {
       const tweets = data.statuses.map((tweet: ResponseData) => ({
-        // TODO: Check which properties to include in the object for the report
+        // TODO: Check which properties to include in the object for the reports
         ...tweet,
         sentiment: sentiment.analyze(tweet.text).score,
       }));

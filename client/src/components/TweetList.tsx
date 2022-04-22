@@ -1,14 +1,12 @@
 import React from 'react';
 
-
 import TweetRow from './TweetRow';
 
 interface TweetListProps {
-  tweets: any
+  tweets: any;
 }
 
 const TweetList = (props: TweetListProps) => {
-
   return (
     <div>
       <h3>Tweet List</h3>
