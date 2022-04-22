@@ -3,7 +3,7 @@ import axios from 'axios';
 interface TweetSearchProps {
   keyword: string;
   location: string | undefined;
-  date: string | undefined;
+  date: Date | undefined;
 }
 
 export const searchTweets = async (props: TweetSearchProps, callback: any) => {

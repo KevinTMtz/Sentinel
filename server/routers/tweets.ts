@@ -10,6 +10,7 @@ const router = Router();
 var twitterClient = new Twitter(TWITTER);
 
 router.get('/search', async (req: Request, res: Response) => {
+  console.log(req.query);
   twitterClient
     .get('search/tweets', {
       q: req.query.keyword,
