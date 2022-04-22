@@ -1,3 +1,4 @@
+// TODO: Rename to chart label
 const getPieChart = (tweets: [any]) => {
   const series = tweets.reduce(
     (arr, curr) => {

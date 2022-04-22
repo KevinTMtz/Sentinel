@@ -12,7 +12,8 @@ const router = Router();
 
 var twitterClient = new Twitter(TWITTER);
 
-router.get(
+// TODO: Either find a way to send data in a GET, use params instead or leave it as POST
+router.post(
   '/search',
   body('since').isISO8601().toDate(),
   body('topic').isString(),
