@@ -15,7 +15,6 @@ var twitterClient = new Twitter(TWITTER);
 // TODO: Either find a way to send data in a GET, use params instead or leave it as POST
 router.post(
   '/search',
-  body('since').isISO8601().toDate(),
   body('topic').isString(),
   body('until').isISO8601().toDate(),
   async (req: Request, res: Response) => {
@@ -23,12 +22,11 @@ router.post(
       return res.status(400).json({ msg: 'Invalid request data' });
     }
 
-    const { since, topic, until } = req.body;
+    const { topic, until } = req.body;
 
     twitterClient
       .get('search/tweets', {
         q: topic,
-        since,
         until,
         result_type: 'mixed',
         count: 100,

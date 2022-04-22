@@ -14,7 +14,6 @@ const Report = () => {
     // TODO: Get req body from search component
     const data = {
       topic: 'marvel',
-      since: '2022-04-13',
       until: new Date().toISOString(),
     };
 
