@@ -62,7 +62,7 @@ const SearchBar = (searchBarProps: SearchBarProps) => {
           />
         </LocalizationProvider>
 
-        <Dropdown callback={setLocation} value={location} />
+        <Dropdown callback={setLocation} value={location} name='State' />
 
         <TextField
           sx={wideSearchBar}
