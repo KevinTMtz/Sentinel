@@ -3,7 +3,6 @@ import express from 'express';
 import path from 'path';
 
 import reportsRouter from './routers/reports';
-import tweetsRouter from './routers/tweets';
 import { SERVER } from './config/config';
 
 const app = express();
@@ -13,8 +12,6 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.static('../client/build'));
 
-// Tweets router
-app.use('/tweets', tweetsRouter);
 // Reports router
 app.use('/reports', reportsRouter);
 
