@@ -10,7 +10,6 @@ const router = Router();
 var twitterClient = new Twitter(TWITTER);
 
 router.get('/search', async (req: Request, res: Response) => {
-  console.log(req.query);
   twitterClient
     .get('search/tweets', {
       q: req.query.keyword,
@@ -18,7 +17,6 @@ router.get('/search', async (req: Request, res: Response) => {
     })
     .then((data) => {
       const tweets = data.statuses.map((tweet: ResponseData) => ({
-        // TODO: Check which properties to include in the object for the reports
         ...tweet,
         sentiment: sentiment.analyze(tweet.text).score,
       }));
