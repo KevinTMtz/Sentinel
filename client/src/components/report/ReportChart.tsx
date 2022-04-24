@@ -12,20 +12,35 @@ interface ReportChartProps {
 
 const ReportChart = (props: ReportChartProps) => {
   const options: ApexOptions = {
+    title: {
+      text: props.id,
+      align: 'center',
+      floating: false,
+      style: { fontSize: '24px', fontWeight: '400' },
+    },
     chart: {
       id: props.id,
       foreColor: 'black',
-      type: props.type,
     },
     labels: props.labels,
     legend: {
-      width: 400,
       position: 'top',
+      horizontalAlign: 'center',
+      floating: false,
     },
+    // TODO: Check responsive values
+    // responsive: {}
+
+    // TODO: Consider the other types of charts
   };
 
   return (
-    <ReactApexChart options={options} series={props.series} type={props.type} />
+    <ReactApexChart
+      width={'60%'}
+      options={options}
+      series={props.series}
+      type={props.type}
+    />
   );
 };
 

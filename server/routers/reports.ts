@@ -11,7 +11,6 @@ const router = Router();
 
 var twitterClient = new Twitter(TWITTER);
 
-// TODO: Either find a way to send data in a GET, use params instead or leave it as POST
 router.get(
   '/search',
   query('topic').isString(),
@@ -30,7 +29,6 @@ router.get(
         result_type: 'mixed',
         count: 10,
         lang: 'es',
-        // TODO: Check how to limit to only mexico by user location
         // geocode: '23.62538105,-102.27326622460241,800km',
       })
       .then((data) => {

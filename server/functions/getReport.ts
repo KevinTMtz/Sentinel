@@ -1,4 +1,3 @@
-// TODO: Rename to chart label
 const getGeneralSentiment = (tweets: [any]) => {
   const series = tweets.reduce(
     (arr, curr) => {

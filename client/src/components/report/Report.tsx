@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore/lite';
-import { Button } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 
 import { firestore } from '../../config/firebase';
 import ReportChart from './ReportChart';
@@ -38,28 +38,27 @@ const Report = (props: ReportProps) => {
   };
 
   return (
-    <div>
-      {/* TODO: Build UI components for report */}
-      <h1>Report: </h1>
-      {
-        /* TODO: Substitute this with the charts components */
-        props.report && (
-          <>
-            <p>Report created</p>
-            <ReportChart {...props.report.generalSentiment} />
-            {reportId !== '' ? (
-              <Button variant='contained' onClick={deleteReport}>
-                Delete Report
-              </Button>
-            ) : (
-              <Button variant='contained' onClick={saveReport}>
-                Save Report
-              </Button>
-            )}
-          </>
-        )
-      }
-    </div>
+    <Grid>
+      {props.report && (
+        <>
+          <Typography variant='h3' textAlign='center'>
+            Report:
+          </Typography>
+          {/* TODO: Add a map function to display al charts */}
+          <ReportChart {...props.report.generalSentiment} />
+
+          {reportId !== '' ? (
+            <Button variant='contained' onClick={deleteReport}>
+              Delete Report
+            </Button>
+          ) : (
+            <Button variant='contained' onClick={saveReport}>
+              Save Report
+            </Button>
+          )}
+        </>
+      )}
+    </Grid>
   );
 };
 

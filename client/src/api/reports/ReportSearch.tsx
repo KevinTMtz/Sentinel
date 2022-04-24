@@ -7,7 +7,6 @@ interface ReportSearchProps {
 }
 
 export const getReport = async (props: ReportSearchProps, callback: any) => {
-  // TODO: Get req body from search component
   const data = {
     topic: props.topic,
     location: props.location,
