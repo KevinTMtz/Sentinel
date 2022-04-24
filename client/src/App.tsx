@@ -25,7 +25,6 @@ import { firebaseAuth } from './config/firebase';
 import { AccountCircle } from '@mui/icons-material';
 import UserAccount from './containers/account/UserAccount';
 import SearchLayout from './components/layouts/SearchLayout';
-import Report from './components/report/Report';
 
 const appStyle = {
   padding: '16px 32px',
@@ -145,9 +144,7 @@ const App = () => {
                 <RequireAuth>
                   <>
                     <SearchLayout />
-                    <Report />
                   </>
-
                 </RequireAuth>
               }
             />

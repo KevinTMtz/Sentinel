@@ -1,10 +1,10 @@
 import { Container, IconButton, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
-import { searchTweets } from '../api/reports/TweetSearch';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Dropdown } from './Dropdown';
+import { getReport } from '../api/reports/ReportSearch';
 
 interface searchProps {
   searchText: string;
@@ -33,8 +33,8 @@ const SearchBar = (searchBarProps: SearchBarProps) => {
   const [location, setLocation] = useState<string>('Todos');
 
   const search = (props: searchProps) => {
-    searchTweets(
-      { keyword: props.searchText, location: props.location, date: props.date },
+    getReport(
+      { topic: props.searchText, location: props.location, date: props.date },
       searchBarProps.callback,
     );
     clearSearchField();

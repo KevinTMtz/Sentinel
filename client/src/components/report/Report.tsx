@@ -1,40 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore/lite';
 import { Button } from '@mui/material';
 
 import { firestore } from '../../config/firebase';
 
-const Report = () => {
-  const [report, setReport] = useState<any>();
+interface ReportProps {
+  // TODO: Change report type to object containing chart types (these should be defined and exported on each chart)
+  report: any;
+}
+
+const Report = (props: ReportProps) => {
   // TODO: Delete this, only to test delete function
   const [reportId, setReportId] = useState<string>('');
-
-  const getReport = async () => {
-    // TODO: Get req body from search component
-    const data = {
-      topic: 'marvel',
-      until: new Date().toISOString(),
-    };
-
-    axios('/reports/search', {
-      method: 'POST',
-      responseType: 'json',
-      data,
-    }).then(
-      (res: any) => {
-        setReport(res.data.report);
-      },
-      (err: any) => {
-        console.log(err);
-      },
-    );
-  };
 
   const saveReport = async () => {
     await addDoc(collection(firestore, 'reports'), {
       // TODO: Get id and add to new collection inside the path /reports/userID/reportID
-      ...report,
+      ...props.report,
     }).then(
       (res) => {
         console.log('Uploaded report');
@@ -54,17 +36,13 @@ const Report = () => {
     );
   };
 
-  useEffect(() => {
-    getReport();
-  }, []);
-
   return (
     <div>
       {/* TODO: Build UI components for report */}
       <h1>Report: </h1>
       {
         /* TODO: Substitute this with the charts components */
-        report && (
+        props.report && (
           <>
             <p>Report created</p>
             {reportId !== '' ? (
