@@ -28,7 +28,7 @@ router.get(
         q: topic,
         until,
         result_type: 'mixed',
-        count: 2,
+        count: 10,
         lang: 'es',
         // TODO: Check how to limit to only mexico by user location
         // geocode: '23.62538105,-102.27326622460241,800km',

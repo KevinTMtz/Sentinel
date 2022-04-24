@@ -3,6 +3,7 @@ import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore/lite';
 import { Button } from '@mui/material';
 
 import { firestore } from '../../config/firebase';
+import ReportChart from './ReportChart';
 
 interface ReportProps {
   // TODO: Change report type to object containing chart types (these should be defined and exported on each chart)
@@ -45,6 +46,7 @@ const Report = (props: ReportProps) => {
         props.report && (
           <>
             <p>Report created</p>
+            <ReportChart {...props.report.generalSentiment} />
             {reportId !== '' ? (
               <Button variant='contained' onClick={deleteReport}>
                 Delete Report

@@ -1,5 +1,5 @@
 // TODO: Rename to chart label
-const getPieChart = (tweets: [any]) => {
+const getGeneralSentiment = (tweets: [any]) => {
   const series = tweets.reduce(
     (arr, curr) => {
       const s = curr.sentiment;
@@ -10,14 +10,16 @@ const getPieChart = (tweets: [any]) => {
     [0, 0, 0],
   );
   return {
+    id: 'General Sentiment',
     series,
     labels: ['Positive', 'Negative', 'Neutral'],
+    type: 'pie',
   };
 };
 
 const getReport = (tweets: [any]) => {
   return {
-    pieChart: getPieChart(tweets),
+    generalSentiment: getGeneralSentiment(tweets),
     // TODO: Add more functions per chart or statistic
   };
 };
