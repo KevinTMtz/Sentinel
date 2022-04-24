@@ -1,6 +1,5 @@
-import dotenv from 'dotenv';
 import { Request, Response, Router } from 'express';
-import { body, validationResult } from 'express-validator';
+import { query, validationResult } from 'express-validator';
 import Twitter from 'twitter';
 import Sentiment from 'sentiment';
 
@@ -13,23 +12,23 @@ const router = Router();
 var twitterClient = new Twitter(TWITTER);
 
 // TODO: Either find a way to send data in a GET, use params instead or leave it as POST
-router.post(
+router.get(
   '/search',
-  body('topic').isString(),
-  body('until').isISO8601().toDate(),
+  query('topic').isString(),
+  query('until').isISO8601().toDate(),
   async (req: Request, res: Response) => {
     if (!validationResult(req).isEmpty()) {
       return res.status(400).json({ msg: 'Invalid request data' });
     }
 
-    const { topic, until } = req.body;
+    const { topic, until, location } = req.query;
 
     twitterClient
       .get('search/tweets', {
         q: topic,
         until,
         result_type: 'mixed',
-        count: 100,
+        count: 2,
         lang: 'es',
         // TODO: Check how to limit to only mexico by user location
         // geocode: '23.62538105,-102.27326622460241,800km',

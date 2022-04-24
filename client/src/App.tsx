@@ -17,7 +17,6 @@ import {
 } from 'react-router-dom';
 import { signOut, User } from 'firebase/auth';
 
-import TweetList from './components/TweetList';
 import LandingPage from './containers/LandingPage';
 import RequireAuth from './components/auth/RequireAuth';
 import Login from './containers/auth/Login';
@@ -25,7 +24,7 @@ import Register from './containers/auth/Register';
 import { firebaseAuth } from './config/firebase';
 import { AccountCircle } from '@mui/icons-material';
 import UserAccount from './containers/account/UserAccount';
-import Report from './components/report/Report';
+import SearchLayout from './components/layouts/SearchLayout';
 
 const appStyle = {
   padding: '16px 32px',
@@ -143,10 +142,8 @@ const App = () => {
               path='search'
               element={
                 <RequireAuth>
-                  {/* TODO: Substitute TweetList with Report */}
                   <>
-                    <TweetList />
-                    <Report />
+                    <SearchLayout />
                   </>
                 </RequireAuth>
               }

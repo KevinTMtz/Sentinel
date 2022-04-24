@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express';
 import Twitter, { ResponseData } from 'twitter';
-import dotenv from 'dotenv';
 import Sentiment from 'sentiment';
 
 import { TWITTER } from '../config/config';
@@ -13,7 +12,7 @@ var twitterClient = new Twitter(TWITTER);
 router.get('/search', async (req: Request, res: Response) => {
   twitterClient
     .get('search/tweets', {
-      q: 'coding',
+      q: req.query.keyword,
       count: 2,
     })
     .then((data) => {
