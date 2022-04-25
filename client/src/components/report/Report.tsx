@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore/lite';
-import { Button } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 
 import { firestore } from '../../config/firebase';
+import ReportChart from './ReportChart';
 
 interface ReportProps {
   // TODO: Change report type to object containing chart types (these should be defined and exported on each chart)
@@ -37,27 +38,33 @@ const Report = (props: ReportProps) => {
   };
 
   return (
-    <div>
-      {/* TODO: Build UI components for report */}
-      <h1>Report: </h1>
-      {
-        /* TODO: Substitute this with the charts components */
-        props.report && (
-          <>
-            <p>Report created</p>
-            {reportId !== '' ? (
-              <Button variant='contained' onClick={deleteReport}>
-                Delete Report
-              </Button>
-            ) : (
-              <Button variant='contained' onClick={saveReport}>
-                Save Report
-              </Button>
-            )}
-          </>
-        )
-      }
-    </div>
+    <Grid>
+      {props.report && (
+        <>
+          <Typography variant='h3' textAlign='center'>
+            {props.report.query.topic.toUpperCase()}'s report:
+          </Typography>
+          <Typography variant='h6' textAlign='center'>
+            Created at: {props.report.query.created_at.split('T')[0]}
+          </Typography>
+          <Typography variant='h6' textAlign='center'>
+            {props.report.statistics.total} tweets found
+          </Typography>
+          {/* TODO: Add a map function to display al charts */}
+          <ReportChart {...props.report.charts.generalSentiment} />
+          <ReportChart {...props.report.charts.accumulatedSentiment} />
+          {reportId !== '' ? (
+            <Button variant='contained' onClick={deleteReport}>
+              Delete Report
+            </Button>
+          ) : (
+            <Button variant='contained' onClick={saveReport}>
+              Save Report
+            </Button>
+          )}
+        </>
+      )}
+    </Grid>
   );
 };
 
