@@ -54,7 +54,15 @@ router.get(
           },
         );
         return res.status(200).json({
-          report: getReport(tweets),
+          report: {
+            query: {
+              topic,
+              location,
+              until,
+              created_at: new Date().toISOString(),
+            },
+            ...getReport(tweets),
+          },
         });
       })
       .catch((err) => {

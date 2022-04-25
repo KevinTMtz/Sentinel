@@ -42,10 +42,13 @@ const Report = (props: ReportProps) => {
       {props.report && (
         <>
           <Typography variant='h3' textAlign='center'>
-            Report:
+            {props.report.query.topic.toUpperCase()} Report:
+          </Typography>
+          <Typography variant='h5' textAlign='center'>
+            ({props.report.query.created_at.split('T')[0]})
           </Typography>
           {/* TODO: Add a map function to display al charts */}
-          <ReportChart {...props.report.generalSentiment} />
+          <ReportChart {...props.report.charts.generalSentiment} />
 
           {reportId !== '' ? (
             <Button variant='contained' onClick={deleteReport}>

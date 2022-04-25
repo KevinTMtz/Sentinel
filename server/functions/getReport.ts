@@ -18,8 +18,13 @@ const getGeneralSentiment = (tweets: [any]) => {
 
 const getReport = (tweets: [any]) => {
   return {
-    generalSentiment: getGeneralSentiment(tweets),
-    // TODO: Add more functions per chart or statistic
+    charts: {
+      generalSentiment: getGeneralSentiment(tweets),
+      // TODO: Add more functions per chart or statistic
+    },
+    statistics: {
+      // TODO: Add useful statistics
+    },
   };
 };
 
