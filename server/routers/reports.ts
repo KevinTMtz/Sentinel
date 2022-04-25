@@ -27,7 +27,7 @@ router.get(
         q: topic,
         until,
         result_type: 'mixed',
-        count: 10,
+        count: 100,
         lang: 'es',
         // geocode: '23.62538105,-102.27326622460241,800km',
       })
@@ -36,18 +36,15 @@ router.get(
           ({
             text,
             created_at,
-            lang,
           }: // place,
           {
             text: string;
             created_at: string;
-            lang: string;
             // place: { string: [string] };
           }) => {
             return {
               text,
               sentiment: sentiment.analyze(text).score,
-              lang,
               created_at,
               // place,
             };
