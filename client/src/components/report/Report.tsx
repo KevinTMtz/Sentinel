@@ -4,6 +4,7 @@ import { Button, Grid, Typography } from '@mui/material';
 
 import { firestore } from '../../config/firebase';
 import ReportChart from './ReportChart';
+import Map, { MapProps } from './Map';
 
 interface ReportProps {
   // TODO: Change report type to object containing chart types (these should be defined and exported on each chart)
@@ -37,8 +38,16 @@ const Report = (props: ReportProps) => {
     );
   };
 
+  // TODO: Delete example
+  const mapProps: MapProps = {
+    type: 'Heat',
+    title: 'Count per state',
+    data: { states: [{ id: 'son', count: 97 }], max: 100 },
+  };
+
   return (
     <Grid>
+      <Map {...mapProps} />
       {props.report && (
         <>
           <Typography variant='h3' textAlign='center'>
