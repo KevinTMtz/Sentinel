@@ -10,12 +10,12 @@ export interface MapProps {
 }
 
 interface HeatMapProps {
-  states: [{ id: string; count: number }];
+  states: { [key: string]: { count: number } };
   max: number;
 }
 
 interface CompareMapProps {
-  states: [{ id: string; sentiment: number }];
+  states: { [key: string]: { sentiment: number } };
   max: number;
   min: number;
 }
@@ -26,14 +26,14 @@ const MapStyle: SxProps = {
     stroke: '#666',
     strokeWidth: 0.25,
   },
-  '.svg-map__location:focus, .svg-map__location:hover': {
-    fill: '#b8e2b3 !important',
-    fillOpacity: '1 !important',
+  '.svg-map__location': {
+    fill: 'grey',
+    fillOpacity: 0.1,
     outline: 0,
   },
 };
 
-const MexicoMap = React.memo(() => {
+const MexicoMap = React.memo((props: any) => {
   const [state, setState] = useState({ id: '', name: '' });
 
   const handleClick = (event: any) => {
@@ -44,33 +44,32 @@ const MexicoMap = React.memo(() => {
   return (
     <>
       <Typography>State: {state.name}</Typography>
+      {props.states[state.id] && (
+        <Typography>Total: {props.states[state.id].count}</Typography>
+      )}
       <SVGMap map={Mexico} onLocationClick={handleClick} />
     </>
   );
 });
 
-const HeatMap = () => {
+const HeatMap = (props: HeatMapProps) => {
   const color = '#1976d2';
 
-  // TODO: Add properties needed in props.data
-  const customMX = {
-    label: 'Custom Mexico Map',
-    states: Mexico.locations.map((location: any) => {
-      return { ...location, fillOpacity: Math.random() };
-    }),
-  };
-
-  // TODO: Process props.data
-  const colors = customMX.states.reduce((acc: any, curr: any) => {
-    const key = `#${curr.id}.svg-map__location`;
+  const colors = Object.keys(props.states).reduce((acc: any, curr: any) => {
+    const key = `#${curr}.svg-map__location`;
     acc[key] = {
       fill: color,
-      fillOpacity: curr.fillOpacity,
+      fillOpacity: props.states[curr].count / props.max,
+    };
+    acc[key + ':focus,' + key + ':hover'] = {
+      fill: '#b8e2b3',
+      fillOpacity: '0.5',
+      outline: 0,
+      cursor: 'pointer',
     };
     return acc;
   }, {});
 
-  // TODO: Change focus color
   const style: SxProps = {
     ...MapStyle,
     ...colors,
@@ -78,7 +77,7 @@ const HeatMap = () => {
 
   return (
     <Container sx={style}>
-      <MexicoMap />
+      <MexicoMap states={props.states} />
     </Container>
   );
 };
@@ -96,7 +95,11 @@ const ComparisonMap = () => {
 
 // TODO: Add props
 const Map = (props: MapProps) => {
-  return props.type === 'Heat' ? <HeatMap /> : <ComparisonMap />;
+  return props.type === 'Heat' ? (
+    <HeatMap {...(props.data as HeatMapProps)} />
+  ) : (
+    <ComparisonMap />
+  );
 };
 
 export default Map;

@@ -42,7 +42,13 @@ const Report = (props: ReportProps) => {
   const mapProps: MapProps = {
     type: 'Heat',
     title: 'Count per state',
-    data: { states: [{ id: 'son', count: 97 }], max: 100 },
+    data: {
+      states: {
+        son: { count: 50 },
+        chh: { count: 100 },
+      },
+      max: 100,
+    },
   };
 
   return (
