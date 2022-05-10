@@ -12,12 +12,14 @@ export interface MapProps {
 interface HeatMapProps {
   states: { [key: string]: { count: number } };
   max: number;
+  label: string;
 }
 
 interface CompareMapProps {
   states: { [key: string]: { sentiment: number } };
   max: number;
   min: number;
+  label: string;
 }
 
 const MapStyle: SxProps = {
@@ -45,7 +47,10 @@ const MexicoMap = React.memo((props: any) => {
     <>
       <Typography>State: {state.name}</Typography>
       {props.states[state.id] && (
-        <Typography>Total: {props.states[state.id].count}</Typography>
+        <Typography>
+          {props.label}
+          {props.states[state.id].count | props.states[state.id].sentiment}
+        </Typography>
       )}
       <SVGMap map={Mexico} onLocationClick={handleClick} />
     </>
@@ -62,8 +67,8 @@ const HeatMap = (props: HeatMapProps) => {
       fillOpacity: props.states[curr].count / props.max,
     };
     acc[key + ':focus,' + key + ':hover'] = {
-      fill: '#b8e2b3',
-      fillOpacity: '0.5',
+      fill: '#C9C09B',
+      fillOpacity: '0.75',
       outline: 0,
       cursor: 'pointer',
     };
@@ -77,28 +82,62 @@ const HeatMap = (props: HeatMapProps) => {
 
   return (
     <Container sx={style}>
-      <MexicoMap states={props.states} />
+      <MexicoMap states={props.states} label={props.label} />
+      {/* TODO: Add Legend here */}
     </Container>
   );
 };
 
-const ComparisonMap = () => {
-  const colors = ['#1976d2', 'grey', 'red'];
-  //TODO: Add style const that depends on props.type
-  const style = {};
+const ComparisonMap = (props: CompareMapProps) => {
+  const colorPositive = '#3fff35';
+  const colorNeutral = 'grey';
+  const colorNegative = '#ff353f';
+
+  const colors = Object.keys(props.states).reduce((acc: any, curr: any) => {
+    const key = `#${curr}.svg-map__location`;
+    const { sentiment } = props.states[curr];
+    acc[key] =
+      sentiment > 0
+        ? {
+            fill: colorPositive,
+            fillOpacity: sentiment / props.max,
+          }
+        : sentiment < 0
+        ? {
+            fill: colorNegative,
+            fillOpacity: sentiment / props.min,
+          }
+        : {
+            fill: colorNeutral,
+            fillOpacity: 0.4,
+          };
+
+    acc[key + ':focus,' + key + ':hover'] = {
+      fill: '#C9C09B',
+      fillOpacity: '0.75',
+      outline: 0,
+      cursor: 'pointer',
+    };
+    return acc;
+  }, {});
+
+  const style: SxProps = {
+    ...MapStyle,
+    ...colors,
+  };
+
   return (
     <Container sx={style}>
-      <MexicoMap />
+      <MexicoMap states={props.states} label={props.label} />
     </Container>
   );
 };
 
-// TODO: Add props
 const Map = (props: MapProps) => {
   return props.type === 'Heat' ? (
     <HeatMap {...(props.data as HeatMapProps)} />
   ) : (
-    <ComparisonMap />
+    <ComparisonMap {...(props.data as CompareMapProps)} />
   );
 };
 

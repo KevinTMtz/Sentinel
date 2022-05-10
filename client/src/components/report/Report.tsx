@@ -48,12 +48,31 @@ const Report = (props: ReportProps) => {
         chh: { count: 100 },
       },
       max: 100,
+      label: 'Total tweets: ',
+    },
+  };
+
+  const mapProps2: MapProps = {
+    type: 'Comparison',
+    title: 'Sentiment per state',
+    data: {
+      states: {
+        son: { sentiment: 5 },
+        chh: { sentiment: 2 },
+        dur: { sentiment: -3 },
+        coa: { sentiment: 0 },
+        gua: { sentiment: -1 },
+      },
+      max: 5,
+      min: -5,
+      label: 'General sentiment: ',
     },
   };
 
   return (
     <Grid>
       <Map {...mapProps} />
+      <Map {...mapProps2} />
       {props.report && (
         <>
           <Typography variant='h3' textAlign='center'>
