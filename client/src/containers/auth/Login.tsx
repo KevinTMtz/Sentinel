@@ -10,42 +10,53 @@ import { firebaseAuth } from '../../config/firebase';
 const Login: React.FC = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [warning, setWarning] = useState<string>();
-  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
 
-  const handleClick = () => {
+  const openSnackBar = () => {
     setOpen(true);
   };
 
-  const Login = async () => {
-    if (email === undefined) {
+  const showError = (error: string) => {
+    setIsLoading(false);
+
+    setWarning(error);
+    openSnackBar();
+
+    setEmail('');
+    setPassword('');
+  };
+
+  const login = async () => {
+    if (email === '') {
       setWarning('Please enter your email');
-      handleClick();
-      return;
-    }
-    if (password === undefined || password?.length < 5) {
-      setWarning('Please enter a valid password');
-      handleClick();
+      openSnackBar();
       return;
     }
 
-    setIsAuth(true);
+    if (password === '' || password.length < 5) {
+      setWarning('Please enter a valid password');
+      openSnackBar();
+      return;
+    }
+
+    setIsLoading(true);
 
     signInWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential) => {
         navigate('/search');
       })
       .catch((error) => {
-        console.log('Error: ' + error.code + ', Message: ' + error.message);
+        showError(error.message);
       });
   };
 
   return (
     <div>
-      {isAuth ? (
+      {isLoading ? (
         <Spinner />
       ) : (
         <>
@@ -58,7 +69,7 @@ const Login: React.FC = () => {
             setEmail={setEmail}
             password={password}
             setPassword={setPassword}
-            authenticate={Login}
+            authenticate={login}
           />
           <SnackBar warning={warning} setOpen={setOpen} open={open} />
         </>
