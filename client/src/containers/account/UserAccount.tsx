@@ -1,6 +1,6 @@
-import { deleteUser, updateEmail, updateProfile, User } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { deleteUser, updateEmail, updateProfile, User } from 'firebase/auth';
 
 import AccountForm from '../../components/account/AccountForm';
 import SnackBar from '../../components/utils/Snackbar';
@@ -10,7 +10,7 @@ import { firebaseAuth } from '../../config/firebase';
 const UserAccount = () => {
   const navigate = useNavigate();
 
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [currentUser, setCurrentUser] = useState<User | null>();
   const [name, setName] = useState<string>('');
@@ -22,23 +22,19 @@ const UserAccount = () => {
   const [warning, setWarning] = useState<string>('');
   const [open, setOpen] = useState(false);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
   firebaseAuth.onAuthStateChanged((user) => {
     setCurrentUser(user);
   });
 
   useEffect(() => {
     const GetInfo = async () => {
-      setLoading(true);
+      setIsLoading(true);
 
       firebaseAuth.onAuthStateChanged((user) => {
         if (user !== null) {
           setName(user.displayName ?? '');
           setEmail(user.email ?? '');
-          setLoading(false);
+          setIsLoading(false);
         }
       });
     };
@@ -46,28 +42,43 @@ const UserAccount = () => {
     GetInfo();
   }, []);
 
+  const openSnackBar = () => {
+    setOpen(true);
+  };
+
+  const showError = (error: string) => {
+    setWarning(error);
+    openSnackBar();
+
+    setIsLoading(false);
+  };
+
   const UpdateUser = async () => {
-    if (name === undefined) {
+    if (name === '') {
       setWarning('Please enter your full name');
-      handleClick();
+      openSnackBar();
       return;
     }
-    if (email === undefined) {
+
+    if (email === '') {
       setWarning('Please enter a valid email');
-      handleClick();
+      openSnackBar();
       return;
     }
-    if (password === undefined || password?.length < 5) {
+
+    if (password === '' || password?.length < 5) {
       setWarning('Please enter a valid password');
-      handleClick();
+      openSnackBar();
       return;
     }
+
     if (password !== confirmation) {
       setWarning('The passwords do not match');
-      handleClick();
+      openSnackBar();
       return;
     }
-    setLoading(true);
+
+    setIsLoading(true);
 
     if (currentUser)
       updateEmail(currentUser, email)
@@ -79,18 +90,16 @@ const UserAccount = () => {
               navigate('/search');
             })
             .catch((error) => {
-              console.log(
-                'Error: ' + error.code + ', Message: ' + error.message,
-              );
+              showError(error.message);
             });
         })
         .catch((error) => {
-          console.log('Error: ' + error.code + ', Message: ' + error.message);
+          showError(error.message);
         });
   };
 
   const DeleteUser = async () => {
-    setLoading(true);
+    setIsLoading(true);
 
     if (currentUser)
       deleteUser(currentUser)
@@ -98,7 +107,7 @@ const UserAccount = () => {
           navigate('/');
         })
         .catch((error) => {
-          console.log('Error: ' + error.code + ', Message: ' + error.message);
+          showError(error.message);
         });
   };
 

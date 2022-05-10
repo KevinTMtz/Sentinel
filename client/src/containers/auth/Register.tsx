@@ -14,41 +14,54 @@ import { firebaseAuth } from '../../config/firebase';
 const Register: React.FC = () => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState<string>();
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
-  const [confirmation, setConfirmation] = useState<string>();
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmation, setConfirmation] = useState<string>('');
   const [warning, setWarning] = useState<string>();
-  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
 
-  const handleClick = () => {
+  const openSnackBar = () => {
     setOpen(true);
   };
 
-  const Register = async () => {
-    if (name === undefined) {
+  const showError = (error: string) => {
+    setIsLoading(false);
+
+    setWarning(error);
+    openSnackBar();
+
+    setEmail('');
+    setPassword('');
+  };
+
+  const register = async () => {
+    if (name === '') {
       setWarning('Please enter your full name');
-      handleClick();
-      return;
-    }
-    if (email === undefined) {
-      setWarning('Please enter your email');
-      handleClick();
-      return;
-    }
-    if (password === undefined || password?.length < 5) {
-      setWarning('Please enter a valid password');
-      handleClick();
-      return;
-    }
-    if (password !== confirmation) {
-      setWarning('The passwords do not match');
-      handleClick();
+      openSnackBar();
       return;
     }
 
-    setIsAuth(true);
+    if (email === '') {
+      setWarning('Please enter your email');
+      openSnackBar();
+      return;
+    }
+
+    if (password === '' || password.length < 5) {
+      setWarning('Please enter a valid password');
+      openSnackBar();
+      return;
+    }
+
+    if (password !== confirmation) {
+      setWarning('The passwords do not match');
+      openSnackBar();
+      return;
+    }
+
+    setIsLoading(true);
 
     createUserWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential) => {
@@ -59,17 +72,17 @@ const Register: React.FC = () => {
             navigate('/search');
           })
           .catch((error) => {
-            console.log('Error: ' + error.code + ', Message: ' + error.message);
+            showError(error.message);
           });
       })
       .catch((error) => {
-        console.log('Error: ' + error.code + ', Message: ' + error.message);
+        showError(error.message);
       });
   };
 
   return (
     <div>
-      {isAuth ? (
+      {isLoading ? (
         <Spinner />
       ) : (
         <div>
@@ -86,7 +99,7 @@ const Register: React.FC = () => {
             setPassword={setPassword}
             confirmation={confirmation}
             setConfirmation={setConfirmation}
-            authenticate={Register}
+            authenticate={register}
           />
           <SnackBar warning={warning} open={open} setOpen={setOpen} />
         </div>
