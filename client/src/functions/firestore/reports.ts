@@ -5,6 +5,7 @@ import {
   doc,
   DocumentData,
   DocumentReference,
+  getDoc,
   getDocs,
 } from 'firebase/firestore/lite';
 
@@ -20,10 +21,19 @@ export const createReport = async (
 };
 
 export const deleteReport = async (
-  reportId: string,
   userId: string,
+  reportId: string,
 ): Promise<void> => {
   return await deleteDoc(
+    doc(firestore, `reports/${userId}/savedReports/${reportId}`),
+  );
+};
+
+export const getReport = async (
+  userId: string,
+  reportId: string,
+): Promise<DocumentData> => {
+  return await getDoc(
     doc(firestore, `reports/${userId}/savedReports/${reportId}`),
   );
 };

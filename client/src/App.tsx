@@ -27,6 +27,7 @@ import { firebaseAuth } from './config/firebase';
 import UserAccount from './containers/account/UserAccount';
 import Search from './containers/search/Search';
 import Reports from './containers/Reports/Reports';
+import ManageReport from './containers/Reports/ManageReport';
 
 const appStyle = {
   padding: '16px 32px',
@@ -167,14 +168,24 @@ const App = () => {
               }
             />
 
-            <Route
-              path='search-reports'
-              element={
-                <RequireAuth>
-                  <Reports />
-                </RequireAuth>
-              }
-            />
+            <Route path='search-reports'>
+              <Route
+                path=''
+                element={
+                  <RequireAuth>
+                    <Reports />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path=':id'
+                element={
+                  <RequireAuth>
+                    <ManageReport />
+                  </RequireAuth>
+                }
+              />
+            </Route>
 
             <Route path='*' element={<Navigate to='/' replace />} />
           </Route>

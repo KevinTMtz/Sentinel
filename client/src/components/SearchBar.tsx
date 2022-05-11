@@ -6,7 +6,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { Dropdown } from './Dropdown';
-import { searchAndGetReport } from '../functions/backend/search';
+import { searchAndGetReport } from '../functions/search/search';
 
 const searchBarContainer = {
   display: 'flex',

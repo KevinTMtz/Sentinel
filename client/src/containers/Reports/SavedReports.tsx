@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { User } from 'firebase/auth';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { firebaseAuth } from '../../config/firebase';
 import { getReports } from '../../functions/firestore/reports';
@@ -8,6 +9,8 @@ import ReportRow from '../../components/report/ReportRow';
 import { styles } from '../../styles/styles';
 
 const SavedReports = () => {
+  const navigate = useNavigate();
+
   const [currentUser, setCurrentUser] = useState<User | null>();
 
   const [reports, setReports] = useState<any[]>([]);
@@ -20,9 +23,9 @@ const SavedReports = () => {
         (querySnapshot) => {
           const tempReports: any[] = [];
 
-          querySnapshot.forEach((report: any) =>
-            tempReports.push(report.data()),
-          );
+          querySnapshot.forEach((report: any) => {
+            tempReports.push({ id: report.id, ...report.data() });
+          });
 
           setReports(tempReports);
         },
@@ -32,13 +35,20 @@ const SavedReports = () => {
 
   return (
     <Box sx={{ ...styles.displayRowsButtons, marginTop: '16px' }}>
-      {reports.map((report, index) => (
-        <ReportRow
-          key={`report-${index}`}
-          report={report.query}
-          createdAt={report.query.created_at}
-        />
-      ))}
+      {reports.length === 0 ? (
+        <Typography variant='h6' textAlign='center' sx={{ marginTop: '32px' }}>
+          You do not have any saved reports
+        </Typography>
+      ) : (
+        reports.map((report, index) => (
+          <ReportRow
+            key={`report-${index}`}
+            report={report.query}
+            createdAt={report.query.created_at}
+            onClick={() => navigate(report.id)}
+          />
+        ))
+      )}
     </Box>
   );
 };
