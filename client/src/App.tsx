@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import {
   AppBar,
+  Box,
   Button,
   IconButton,
   Menu,
@@ -25,6 +26,7 @@ import Register from './containers/auth/Register';
 import { firebaseAuth } from './config/firebase';
 import UserAccount from './containers/account/UserAccount';
 import Search from './containers/search/Search';
+import Reports from './containers/Reports/Reports';
 
 const appStyle = {
   padding: '16px 32px',
@@ -37,9 +39,7 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState<User | null>();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  firebaseAuth.onAuthStateChanged((user) => {
-    setCurrentUser(user);
-  });
+  firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -50,17 +50,31 @@ const App = () => {
   };
 
   return (
-    <div>
+    <Box>
       <AppBar position='static'>
         <Toolbar variant='dense'>
           <Typography
             variant='h6'
             component='div'
-            sx={{ flexGrow: 1 }}
+            sx={{ flexGrow: 1, cursor: 'pointer' }}
             onClick={() => navigate(currentUser ? '/search' : '/')}
           >
             Sentinel
           </Typography>
+
+          {currentUser && (
+            <>
+              <Button color='inherit' onClick={() => navigate('/search')}>
+                Search
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => navigate('/search-reports')}
+              >
+                Reports
+              </Button>
+            </>
+          )}
 
           {location.pathname !== '/register' &&
             location.pathname !== '/login' &&
@@ -94,14 +108,6 @@ const App = () => {
                   <MenuItem
                     onClick={() => {
                       handleClose();
-                      navigate('/search');
-                    }}
-                  >
-                    Search
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      handleClose();
                       navigate('/account');
                     }}
                   >
@@ -110,17 +116,15 @@ const App = () => {
                   <MenuItem
                     onClick={() => {
                       signOut(firebaseAuth)
-                        .then(() => {
-                          navigate('/');
-                        })
-                        .catch((error) => {
+                        .then(() => navigate('/'))
+                        .catch((error) =>
                           console.log(
                             'Error: ' +
                               error.code +
                               ', Message: ' +
                               error.message,
-                          );
-                        });
+                          ),
+                        );
 
                       handleClose();
                     }}
@@ -137,14 +141,22 @@ const App = () => {
         </Toolbar>
       </AppBar>
 
-      <div style={appStyle}>
+      <Box sx={appStyle}>
         <Routes>
           <Route path='/'>
             <Route index element={<LandingPage />} />
 
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
-            <Route path='account' element={<UserAccount />} />
+
+            <Route
+              path='account'
+              element={
+                <RequireAuth>
+                  <UserAccount />
+                </RequireAuth>
+              }
+            />
 
             <Route
               path='search'
@@ -155,11 +167,20 @@ const App = () => {
               }
             />
 
+            <Route
+              path='search-reports'
+              element={
+                <RequireAuth>
+                  <Reports />
+                </RequireAuth>
+              }
+            />
+
             <Route path='*' element={<Navigate to='/' replace />} />
           </Route>
         </Routes>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

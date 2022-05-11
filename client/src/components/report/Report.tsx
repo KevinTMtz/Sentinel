@@ -14,9 +14,7 @@ interface ReportProps {
 const Report = (props: ReportProps) => {
   const [currentUser, setCurrentUser] = useState<User | null>();
 
-  firebaseAuth.onAuthStateChanged((user) => {
-    setCurrentUser(user);
-  });
+  firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
   // TODO: Delete this, only to test delete function
   const [reportId, setReportId] = useState<string>('');
