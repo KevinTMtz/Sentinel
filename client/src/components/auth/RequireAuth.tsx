@@ -6,13 +6,11 @@ import { firebaseAuth } from '../../config/firebase';
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(() =>
     firebaseAuth.onAuthStateChanged((user) => {
-      if (!user) {
-        navigate('/login');
-      }
-    });
-  });
+      if (!user) navigate('/login');
+    }),
+  );
 
   return children;
 };

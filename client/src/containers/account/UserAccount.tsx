@@ -22,9 +22,7 @@ const UserAccount = () => {
   const [warning, setWarning] = useState<string>('');
   const [open, setOpen] = useState(false);
 
-  firebaseAuth.onAuthStateChanged((user) => {
-    setCurrentUser(user);
-  });
+  firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
   useEffect(() => {
     const GetInfo = async () => {
