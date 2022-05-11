@@ -1,16 +1,12 @@
-import { Container, IconButton, TextField } from '@mui/material';
+import { Dispatch, useState } from 'react';
+import { Box } from '@mui/system';
+import { IconButton, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from 'react';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Dropdown } from './Dropdown';
-import { getReport } from '../api/reports/ReportSearch';
 
-interface searchProps {
-  searchText: string;
-  location: string | undefined;
-  date: Date | undefined;
-}
+import { Dropdown } from './Dropdown';
+import { searchAndGetReport } from '../functions/backend/search';
 
 const searchBarContainer = {
   display: 'flex',
@@ -20,69 +16,61 @@ const searchBarContainer = {
 };
 
 const wideSearchBar = {
-  width: '60vw',
+  width: '60%',
 };
 
 interface SearchBarProps {
-  callback: any;
+  setReport: Dispatch<any>;
 }
 
-const SearchBar = (searchBarProps: SearchBarProps) => {
-  const [searchText, setSearchText] = useState('');
+const SearchBar = (props: SearchBarProps) => {
+  const [topic, setTopic] = useState('');
   const [date, setDate] = useState(new Date());
   const [location, setLocation] = useState<string>('Todos');
 
-  const search = (props: searchProps) => {
-    getReport(
-      { topic: props.searchText, location: props.location, date: props.date },
-      searchBarProps.callback,
+  const search = () => {
+    searchAndGetReport({
+      topic: topic,
+      location: location,
+      until: date,
+    }).then(
+      (res: any) => {
+        props.setReport(res.data.report);
+      },
+      (err: any) => {
+        console.log(err);
+      },
     );
-    clearSearchField();
-  };
-
-  const clearSearchField = () => {
-    setSearchText('');
-  };
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    search({ searchText: searchText, date: date, location: location });
   };
 
   return (
-    <>
-      <Container sx={searchBarContainer}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            disableFuture
-            value={date}
-            onChange={(value) => {
-              value && setDate(value);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-
-        <Dropdown callback={setLocation} value={location} name='State' />
-
-        <TextField
-          sx={wideSearchBar}
-          label='Search Topic'
-          value={searchText}
-          onChange={(event) => setSearchText(event.target.value)}
-          onKeyUp={(event) => {
-            event.key === 'Enter' &&
-              search({
-                searchText: searchText,
-                date: date,
-                location: location,
-              });
+    <Box sx={searchBarContainer}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DatePicker
+          disableFuture
+          value={date}
+          onChange={(value) => {
+            value && setDate(value);
           }}
+          renderInput={(params) => <TextField {...params} />}
         />
-        <IconButton onClick={handleClick}>
-          <SearchIcon color='primary' />
-        </IconButton>
-      </Container>
-    </>
+      </LocalizationProvider>
+
+      <Dropdown callback={setLocation} value={location} name='State' />
+
+      <TextField
+        sx={wideSearchBar}
+        label='Search Topic'
+        value={topic}
+        onChange={(event) => setTopic(event.target.value)}
+        onKeyUp={(event) => {
+          event.key === 'Enter' && search();
+        }}
+      />
+      <IconButton onClick={() => search()}>
+        <SearchIcon color='primary' />
+      </IconButton>
+    </Box>
   );
 };
 

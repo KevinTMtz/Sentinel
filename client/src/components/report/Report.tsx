@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore/lite';
 import { Button, Grid, Typography } from '@mui/material';
+import { User } from 'firebase/auth';
 
-import { firestore } from '../../config/firebase';
 import ReportChart from './ReportChart';
+import { firebaseAuth } from '../../config/firebase';
+import { createReport, deleteReport } from '../../functions/firestore/reports';
 
 interface ReportProps {
   // TODO: Change report type to object containing chart types (these should be defined and exported on each chart)
@@ -11,30 +12,35 @@ interface ReportProps {
 }
 
 const Report = (props: ReportProps) => {
+  const [currentUser, setCurrentUser] = useState<User | null>();
+
+  firebaseAuth.onAuthStateChanged((user) => {
+    setCurrentUser(user);
+  });
+
   // TODO: Delete this, only to test delete function
   const [reportId, setReportId] = useState<string>('');
 
   const saveReport = async () => {
-    await addDoc(collection(firestore, 'reports'), {
-      // TODO: Get id and add to new collection inside the path /reports/userID/reportID
-      ...props.report,
-    }).then(
-      (res) => {
-        console.log('Uploaded report');
-        setReportId(res.id);
-      },
-      (error) => console.log('Error uploading report'),
-    );
+    if (currentUser?.uid)
+      await createReport(currentUser?.uid, props.report).then(
+        (res) => {
+          console.log('Uploaded report');
+          setReportId(res.id);
+        },
+        (error) => console.log('Error uploading report'),
+      );
   };
 
-  const deleteReport = async () => {
-    await deleteDoc(doc(firestore, 'reports', `${reportId}`)).then(
-      (res) => {
-        console.log('Deleted report');
-        setReportId('');
-      },
-      (error) => console.log('Error deleting report'),
-    );
+  const unsaveReport = async () => {
+    if (currentUser?.uid)
+      await deleteReport(reportId, currentUser?.uid).then(
+        (res) => {
+          console.log('Deleted report');
+          setReportId('');
+        },
+        (error) => console.log('Error deleting report'),
+      );
   };
 
   return (
@@ -54,7 +60,7 @@ const Report = (props: ReportProps) => {
           <ReportChart {...props.report.charts.generalSentiment} />
           <ReportChart {...props.report.charts.accumulatedSentiment} />
           {reportId !== '' ? (
-            <Button variant='contained' onClick={deleteReport}>
+            <Button variant='contained' onClick={unsaveReport}>
               Delete Report
             </Button>
           ) : (

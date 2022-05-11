@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import {
   AppBar,
   Button,
   IconButton,
@@ -8,13 +15,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { AccountCircle } from '@mui/icons-material';
 import { signOut, User } from 'firebase/auth';
 
 import LandingPage from './containers/LandingPage';
@@ -22,9 +23,8 @@ import RequireAuth from './components/auth/RequireAuth';
 import Login from './containers/auth/Login';
 import Register from './containers/auth/Register';
 import { firebaseAuth } from './config/firebase';
-import { AccountCircle } from '@mui/icons-material';
 import UserAccount from './containers/account/UserAccount';
-import SearchLayout from './components/layouts/SearchLayout';
+import Search from './containers/search/Search';
 
 const appStyle = {
   padding: '16px 32px',
@@ -94,6 +94,14 @@ const App = () => {
                   <MenuItem
                     onClick={() => {
                       handleClose();
+                      navigate('/search');
+                    }}
+                  >
+                    Search
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
                       navigate('/account');
                     }}
                   >
@@ -142,9 +150,7 @@ const App = () => {
               path='search'
               element={
                 <RequireAuth>
-                  <>
-                    <SearchLayout />
-                  </>
+                  <Search />
                 </RequireAuth>
               }
             />
