@@ -8,6 +8,11 @@ export interface MapProps {
   data: HeatMapProps | CompareMapProps;
 }
 
+interface MapLegendProps {
+  title: string;
+  colors: { color: string; label: string; gradient: boolean }[];
+}
+
 interface HeatMapProps {
   states: { [key: string]: { count: number } };
   max: number;
@@ -43,27 +48,23 @@ const MexicoMap = React.memo((props: any) => {
 
   const handleClick = (event: any) => {
     const loc = event.target.attributes;
-    console.log(loc);
     setState({ id: loc.id.value, name: loc.name.value });
   };
   return (
     <>
-      <Typography>State: {state.name}</Typography>
-      {props.states[state.id] && (
-        <Typography>
-          {props.label}
-          {props.states[state.id].count | props.states[state.id].sentiment}
-        </Typography>
-      )}
+      <Typography align='center' fontWeight='bold'>
+        {props.states[state.id]
+          ? `${state.name.toUpperCase()}'s ${props.label.toLowerCase()}: ${
+              props.states[state.id].count | props.states[state.id].sentiment
+            }`
+          : "Click a state to view it's data"}
+      </Typography>
       <SVGMap map={Mexico} onLocationClick={handleClick} />
     </>
   );
 });
 
-const Legend = (props: {
-  title: string;
-  colors: { color: string; label: string; gradient: boolean }[];
-}) => {
+const Legend = (props: MapLegendProps) => {
   const colors = [
     ...props.colors,
     {
@@ -84,6 +85,7 @@ const Legend = (props: {
             alignItems='center'
             justifyContent='space-between'
             width='75%'
+            key={props.title.trim() + color}
           >
             <Paper
               sx={{
@@ -94,7 +96,9 @@ const Legend = (props: {
                   : color,
               }}
             ></Paper>
-            <Typography variant='body2'>{label}</Typography>
+            <Typography variant='body2' fontStyle='italic'>
+              {label}
+            </Typography>
           </Grid>
         ))}
       </Grid>
@@ -132,7 +136,7 @@ const HeatMap = (props: HeatMapProps) => {
 
   return (
     <Container sx={style}>
-      <MexicoMap states={props.states} label={props.label + ': '} />
+      <MexicoMap states={props.states} label={props.label} />
       <Legend colors={legendColors} title={props.title} />
     </Container>
   );
@@ -199,7 +203,7 @@ const ComparisonMap = (props: CompareMapProps) => {
 
   return (
     <Container sx={style}>
-      <MexicoMap states={props.states} label={props.label + ': '} />
+      <MexicoMap states={props.states} label={props.label} />
       <Legend colors={legendColors} title={props.title} />
     </Container>
   );
