@@ -7,41 +7,41 @@ interface DropdownProps {
 }
 
 export const Dropdown = (props: DropdownProps) => {
-  const mexicanStates = [
-    'Todos',
-    'Aguascalientes',
-    'Baja California',
-    'Baja California Sur',
-    'Campeche',
-    'Chiapas',
-    'Chihuahua',
-    'Coahuila',
-    'Colima',
-    'Ciudad de Mexico',
-    'Durango',
-    'Guanajuato',
-    'Guerrero',
-    'Hidalgo',
-    'Jalisco',
-    'Estado de Mexico',
-    'Michoacan',
-    'Morelos',
-    'Nayarit',
-    'Nuevo Leon',
-    'Oaxaca',
-    'Puebla',
-    'Queretaro',
-    'Quintana Roo',
-    'San Luis Potosi',
-    'Sinaloa',
-    'Sonora',
-    'Tabasco',
-    'Tamaulipas',
-    'Tlaxcala',
-    'Veracruz',
-    'Yucatan',
-    'Zacatecas',
-  ];
+  const stateShortNames: { [stateName: string]: string } = {
+    Todos: 'ALL',
+    Aguascalientes: 'AG',
+    'Baja California': 'BC',
+    'Baja California Sur': 'BS',
+    Campeche: 'CM',
+    Chiapas: 'CS',
+    Chihuahua: 'CH',
+    Coahuila: 'CO',
+    Colima: 'CL',
+    'Ciudad de Mexico': 'CX',
+    Durango: 'DG',
+    Guanajuato: 'GT',
+    Guerrero: 'GR',
+    Hidalgo: 'HG',
+    Jalisco: 'JC',
+    'Estado de Mexico': 'EM',
+    Michoacan: 'MI',
+    Morelos: 'MO',
+    Nayarit: 'NA',
+    'Nuevo Leon': 'NL',
+    Oaxaca: 'OA',
+    Puebla: 'PU',
+    Queretaro: 'QT',
+    'Quintana Roo': 'QR',
+    'San Luis Potosi': 'SL',
+    Sinaloa: 'SI',
+    Sonora: 'SO',
+    Tabasco: 'TB',
+    Tamaulipas: 'TM',
+    Tlaxcala: 'TL',
+    Veracruz: 'VE',
+    Yucatan: 'YU',
+    Zacatecas: 'ZA',
+  };
 
   return (
     <FormControl sx={{ m: 1, width: 300 }}>
@@ -55,8 +55,8 @@ export const Dropdown = (props: DropdownProps) => {
           props.callback(event.target.value);
         }}
       >
-        {mexicanStates.map((state) => (
-          <MenuItem key={state} value={state}>
+        {Object.keys(stateShortNames).map((state) => (
+          <MenuItem key={state} value={stateShortNames[state]}>
             {state}
           </MenuItem>
         ))}
