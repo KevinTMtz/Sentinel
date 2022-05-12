@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import {
   AppBar,
+  Box,
   Button,
   IconButton,
   Menu,
@@ -8,13 +16,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { AccountCircle } from '@mui/icons-material';
 import { signOut, User } from 'firebase/auth';
 
 import LandingPage from './containers/LandingPage';
@@ -22,9 +24,10 @@ import RequireAuth from './components/auth/RequireAuth';
 import Login from './containers/auth/Login';
 import Register from './containers/auth/Register';
 import { firebaseAuth } from './config/firebase';
-import { AccountCircle } from '@mui/icons-material';
 import UserAccount from './containers/account/UserAccount';
-import SearchLayout from './components/layouts/SearchLayout';
+import Search from './containers/search/Search';
+import Reports from './containers/Reports/Reports';
+import ManageReport from './containers/Reports/ManageReport';
 
 const appStyle = {
   padding: '16px 32px',
@@ -37,9 +40,7 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState<User | null>();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  firebaseAuth.onAuthStateChanged((user) => {
-    setCurrentUser(user);
-  });
+  firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -50,17 +51,31 @@ const App = () => {
   };
 
   return (
-    <div>
+    <Box>
       <AppBar position='static'>
         <Toolbar variant='dense'>
           <Typography
             variant='h6'
             component='div'
-            sx={{ flexGrow: 1 }}
+            sx={{ flexGrow: 1, cursor: 'pointer' }}
             onClick={() => navigate(currentUser ? '/search' : '/')}
           >
             Sentinel
           </Typography>
+
+          {currentUser && (
+            <>
+              <Button color='inherit' onClick={() => navigate('/search')}>
+                Search
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => navigate('/search-reports')}
+              >
+                Reports
+              </Button>
+            </>
+          )}
 
           {location.pathname !== '/register' &&
             location.pathname !== '/login' &&
@@ -102,17 +117,15 @@ const App = () => {
                   <MenuItem
                     onClick={() => {
                       signOut(firebaseAuth)
-                        .then(() => {
-                          navigate('/');
-                        })
-                        .catch((error) => {
+                        .then(() => navigate('/'))
+                        .catch((error) =>
                           console.log(
                             'Error: ' +
                               error.code +
                               ', Message: ' +
                               error.message,
-                          );
-                        });
+                          ),
+                        );
 
                       handleClose();
                     }}
@@ -129,31 +142,56 @@ const App = () => {
         </Toolbar>
       </AppBar>
 
-      <div style={appStyle}>
+      <Box sx={appStyle}>
         <Routes>
           <Route path='/'>
             <Route index element={<LandingPage />} />
 
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
-            <Route path='account' element={<UserAccount />} />
+
+            <Route
+              path='account'
+              element={
+                <RequireAuth>
+                  <UserAccount />
+                </RequireAuth>
+              }
+            />
 
             <Route
               path='search'
               element={
                 <RequireAuth>
-                  <>
-                    <SearchLayout />
-                  </>
+                  <Search />
                 </RequireAuth>
               }
             />
 
+            <Route path='search-reports'>
+              <Route
+                path=''
+                element={
+                  <RequireAuth>
+                    <Reports />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path=':id'
+                element={
+                  <RequireAuth>
+                    <ManageReport />
+                  </RequireAuth>
+                }
+              />
+            </Route>
+
             <Route path='*' element={<Navigate to='/' replace />} />
           </Route>
         </Routes>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

@@ -3,7 +3,7 @@ import Mexico from '@svg-maps/mexico';
 import { SVGMap } from 'react-svg-map';
 import { Container, Grid, Paper, SxProps, Typography } from '@mui/material';
 
-export interface MapProps {
+interface MapProps {
   type: 'Heat' | 'Comparison';
   data: HeatMapProps | CompareMapProps;
 }
@@ -46,10 +46,15 @@ const MapStyle: SxProps = {
 const MexicoMap = React.memo((props: any) => {
   const [state, setState] = useState({ id: '', name: '' });
 
-  const handleClick = (event: any) => {
+  const handleFocus = (event: any) => {
     const loc = event.target.attributes;
     setState({ id: loc.id.value, name: loc.name.value });
   };
+
+  const handleBlur = () => {
+    setState({ id: '', name: '' });
+  };
+
   return (
     <>
       <Typography align='center' fontWeight='bold'>
@@ -59,7 +64,11 @@ const MexicoMap = React.memo((props: any) => {
             }`
           : "Click a state to view it's data"}
       </Typography>
-      <SVGMap map={Mexico} onLocationClick={handleClick} />
+      <SVGMap
+        map={Mexico}
+        onLocationFocus={handleFocus}
+        onLocationBlur={handleBlur}
+      />
     </>
   );
 });
@@ -73,6 +82,7 @@ const Legend = (props: MapLegendProps) => {
       gradient: false,
     },
   ];
+
   return (
     <Paper sx={{ padding: '10px' }}>
       <Grid container direction='column' alignItems='center'>

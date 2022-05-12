@@ -1,7 +1,8 @@
-import { Button, Container, TextField, Typography } from '@mui/material';
-import { Box } from '@mui/system';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button, Container, TextField, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+
 import { styles } from '../../styles/styles';
 
 const centerForm = {
@@ -44,7 +45,7 @@ const AccountForm: React.FC<AccountFormProps> = (props: AccountFormProps) => {
           My account
         </Typography>
       </header>
-      <form style={styles.displayRows}>
+      <form style={styles.displayRows} onSubmit={(e) => e.preventDefault()}>
         <TextField
           variant='outlined'
           label='Name:'

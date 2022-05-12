@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, TextField, Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { styles } from '../../styles/styles';
+import { Button, TextField, Container, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+
+import { styles } from '../../styles/styles';
 
 const centerForm = {
   position: 'absolute',
@@ -24,14 +25,14 @@ interface AuthFormProps {
   type: 'login' | 'register';
   warning: string | undefined;
   setWarning: React.Dispatch<React.SetStateAction<string | undefined>>;
-  name?: string | undefined;
-  setName?: React.Dispatch<React.SetStateAction<string | undefined>>;
-  email: string | undefined;
-  setEmail: React.Dispatch<React.SetStateAction<string | undefined>>;
-  password: string | undefined;
-  setPassword: React.Dispatch<React.SetStateAction<string | undefined>>;
-  confirmation?: string | undefined;
-  setConfirmation?: React.Dispatch<React.SetStateAction<string | undefined>>;
+  name?: string;
+  setName?: React.Dispatch<React.SetStateAction<string>>;
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  confirmation?: string;
+  setConfirmation?: React.Dispatch<React.SetStateAction<string>>;
   authenticate: () => Promise<void>;
 }
 
