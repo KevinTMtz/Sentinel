@@ -45,10 +45,8 @@ export const Dropdown = (props: DropdownProps) => {
 
   return (
     <FormControl sx={{ m: 1, width: 300 }}>
-      <InputLabel id='demo-multiple-name-label'>{props.name}</InputLabel>
+      <InputLabel>{props.name}</InputLabel>
       <Select
-        labelId='demo-controlled-open-select-label'
-        id='demo-controlled-open-select'
         value={props.value}
         label='State'
         onChange={(event) => {
