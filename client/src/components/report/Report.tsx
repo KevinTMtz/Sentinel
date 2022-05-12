@@ -41,21 +41,21 @@ const Report = (props: ReportProps) => {
   // TODO: Delete example
   const mapProps: MapProps = {
     type: 'Heat',
-    title: 'Count per state',
     data: {
+      title: 'Count per state',
       states: {
         son: { count: 50 },
         chh: { count: 100 },
       },
       max: 100,
-      label: 'Total tweets: ',
+      label: 'Total tweets',
     },
   };
 
   const mapProps2: MapProps = {
     type: 'Comparison',
-    title: 'Sentiment per state',
     data: {
+      title: 'Sentiment per state',
       states: {
         son: { sentiment: 5 },
         chh: { sentiment: 2 },
@@ -65,7 +65,7 @@ const Report = (props: ReportProps) => {
       },
       max: 5,
       min: -5,
-      label: 'General sentiment: ',
+      label: 'General sentiment',
     },
   };
 
