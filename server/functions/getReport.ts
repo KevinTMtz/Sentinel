@@ -37,6 +37,42 @@ const getAccumulatedSentiment = (tweets: [any]) => {
   };
 };
 
+// TODO: Add dynamic information
+const getTotalTweetsMap = () => {
+  return {
+    type: 'Heat',
+    data: {
+      title: 'Total tweets count per state',
+      states: {
+        son: { count: 50 },
+        chh: { count: 100 },
+      },
+      max: 100,
+      label: 'Tweets count',
+    },
+  };
+};
+
+// TODO: Add dynamic information
+const getAverageSentimentMap = () => {
+  return {
+    type: 'Comparison',
+    data: {
+      title: 'Average sentiment per state ',
+      states: {
+        son: { sentiment: 5 },
+        chh: { sentiment: 2 },
+        dur: { sentiment: -3 },
+        coa: { sentiment: 0 },
+        gua: { sentiment: -1 },
+      },
+      max: 5,
+      min: -5,
+      label: 'Average sentiment',
+    },
+  };
+};
+
 const getReport = (tweets: [any]) => {
   return {
     charts: {
@@ -47,6 +83,11 @@ const getReport = (tweets: [any]) => {
     statistics: {
       // TODO: Add useful statistics
       total: tweets.length,
+    },
+    maps: {
+      // TODO: Add useful maps
+      totalTweets: getTotalTweetsMap(),
+      averageSentiment: getAverageSentimentMap(),
     },
   };
 };

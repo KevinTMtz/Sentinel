@@ -6,6 +6,7 @@ import {
   getDateAndTime,
   upperCaseFirstLetter,
 } from '../../functions/utils/utils';
+import Map from './Map';
 
 interface ReportProps {
   report: any;
@@ -25,6 +26,8 @@ const Report = (props: ReportProps) => (
     </Typography>
     <ReportChart {...props.report.charts.generalSentiment} />
     <ReportChart {...props.report.charts.accumulatedSentiment} />
+    <Map {...props.report.maps.totalTweets} />
+    <Map {...props.report.maps.averageSentiment} />
   </Grid>
 );
 

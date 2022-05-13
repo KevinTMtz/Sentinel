@@ -2152,6 +2152,11 @@
     ejs "^2.6.1"
     magic-string "^0.25.0"
 
+"@svg-maps/mexico@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@svg-maps/mexico/-/mexico-1.0.2.tgz#e29850ac7c21e9cab8b2cad50f3f07de9ca803ca"
+  integrity sha512-Rog1t2VAXVHnaLN+hzNOsKZ36a9cQiQDk2199ykSmtvSHEmONk3ZfVc9+Oxbbpfc6WfjFrp71dzwNMmfNOw8mg==
+
 "@svgr/babel-plugin-add-jsx-attribute@^5.4.0":
   version "5.4.0"
   resolved "https://registry.npmjs.org/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-5.4.0.tgz"
@@ -2551,6 +2556,13 @@
   integrity sha512-YYknwy0D0iOwKQgz9v8nOzt2J6l4gouBmDnWqUUznltOTaon+r8US8ky8HvN0tXvc38U9m6z/t2RsVsnd1zM0g==
   dependencies:
     "@types/history" "^4.7.11"
+    "@types/react" "*"
+
+"@types/react-svg-map@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@types/react-svg-map/-/react-svg-map-2.1.2.tgz#1dc41d49bf14d75473a51e7ce2875e27106b4331"
+  integrity sha512-Mm8udymAR45B96EJJJRucSN0WZS/2bDsacrnJX3zOziDvuN7hkqM5jo564psUVdVLv3xHU47VXvPs94EJwBZEg==
+  dependencies:
     "@types/react" "*"
 
 "@types/react-transition-group@^4.4.4":
@@ -10375,6 +10387,13 @@ react-scripts@4.0.3:
     workbox-webpack-plugin "5.1.4"
   optionalDependencies:
     fsevents "^2.1.3"
+
+react-svg-map@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-svg-map/-/react-svg-map-2.2.0.tgz#ecdeb8898e6e34953c83afbf7433a621925a8f0b"
+  integrity sha512-slZTt4ffXgOb3ND/WEHOc0ojX5lBEv9FKbTU3tWnTLZPQ9L0e686SBqgVxmsuTD+o52Aor87InMzAzDRTQedpA==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-transition-group@^4.4.2:
   version "4.4.2"
