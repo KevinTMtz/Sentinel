@@ -106,13 +106,17 @@ const AxisReportChart = (props: ReportChartProps) => {
       },
     },
     colors: [
-      function ({ dataPointIndex }: { dataPointIndex: number }) {
-        if (dataPointIndex - 1 < 0) {
-          return '#ff3f34';
-        } else if (dataPointIndex - 1 === 0) {
-          return '#80808066';
-        } else {
-          return '#44bd32';
+      ({ dataPointIndex }: { dataPointIndex: number }) => {
+        if (props.categories) {
+          const categoryNum = Number(props.categories[dataPointIndex]);
+
+          if (categoryNum < 0) {
+            return '#ff3f34';
+          } else if (categoryNum > 0) {
+            return '#44bd32';
+          } else {
+            return '#80808066';
+          }
         }
       },
     ],
