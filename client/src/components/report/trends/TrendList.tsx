@@ -8,7 +8,7 @@ const listStyle = {
   width: '100%',
   display: 'flex',
   flexWrap: 'wrap',
-  justifyContent: 'space-between',
+  justifyContent: 'space-evenly',
   gap: '8px',
 };
 

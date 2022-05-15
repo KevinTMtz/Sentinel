@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { query, validationResult } from 'express-validator';
 import Twitter from 'twitter';
+import TwitterV2 from 'twitter-v2';
 import Sentiment from 'sentiment';
 
 import { TWITTER } from '../config/config';
@@ -11,6 +12,10 @@ const sentiment = new Sentiment();
 const router = Router();
 
 var twitterClient = new Twitter(TWITTER);
+var twitterClientV2 = new TwitterV2({
+  consumer_key: TWITTER.consumer_key,
+  consumer_secret: TWITTER.consumer_secret,
+});
 
 router.get(
   '/search',
@@ -39,6 +44,8 @@ router.get(
       });
     }
 
+    const tweetCount = await getTweetCount(topic, until);
+
     return res.status(200).json({
       report: {
         query: {
@@ -47,7 +54,7 @@ router.get(
           until,
           created_at: new Date().toISOString(),
         },
-        ...(await getReport(tweets)),
+        ...(await getReport(tweets, tweetCount)),
         trends: await getTrends(),
       },
     });
@@ -73,6 +80,17 @@ const getTweets = async (q: any, until: any, state: any) => {
   );
 
   return tweets;
+};
+
+const getTweetCount = async (q: any, until: any) => {
+  const data = await twitterClientV2.get('tweets/counts/recent', {
+    query: q,
+    start_time: until,
+    end_time: until,
+    granularity: 'day',
+  });
+
+  return data as any[];
 };
 
 const getTrends = async () => {
