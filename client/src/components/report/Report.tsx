@@ -3,12 +3,13 @@ import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 
 import ReportChart from './ReportChart';
+import Map from './Map';
+import TweetList from './tweets/TweetList';
+import TrendList from './trends/TrendList';
 import {
   getDateAndTime,
   upperCaseFirstLetter,
 } from '../../functions/utils/utils';
-import Map from './Map';
-import TweetList from './tweets/TweetList';
 import { objectWithKeyStr } from '../../types/types';
 
 interface ReportProps {
@@ -45,6 +46,7 @@ const Report = (props: ReportProps) => {
       },
     },
     tweets: { title: 'Tweets sample' },
+    trends: { title: 'Trending in Mexico' },
   };
 
   const getElement = (elementType: string, key: string, elementProps: any) => {
@@ -61,8 +63,7 @@ const Report = (props: ReportProps) => {
     <Grid>
       <Typography variant='h4'>
         <strong>
-          {upperCaseFirstLetter(props.report.query.topic)}
-          's report:
+          Search report - {upperCaseFirstLetter(props.report.query.topic)}
         </strong>
       </Typography>
       <Typography variant='h6'>
@@ -73,36 +74,42 @@ const Report = (props: ReportProps) => {
       </Typography>
 
       {Object.keys(reportContent).map((section: string) => {
-        const sectionElements = (
-          section === 'tweets'
-            ? props.report[section] && [
-                <TweetList tweets={props.report[section]} key={section} />,
-              ]
-            : Object.keys(reportContent[section].elements).map(
-                (elementType: string) =>
-                  reportContent[section].elements[elementType].reduce(
-                    (
-                      resultArr: (JSX.Element | undefined)[],
-                      elementName: string,
-                    ) => {
-                      if (
-                        props.report.hasOwnProperty(elementType) &&
-                        props.report[elementType].hasOwnProperty(elementName)
-                      )
-                        resultArr.push(
-                          getElement(
-                            elementType,
-                            elementName,
-                            props.report[elementType][elementName],
-                          ),
-                        );
+        let sectionElements = undefined;
 
-                      return resultArr;
-                    },
-                    [],
-                  ),
-              )
-        )?.flat(1);
+        if (section === 'tweets' && props.report[section])
+          sectionElements = [
+            <TweetList tweets={props.report[section]} key={section} />,
+          ];
+        else if (section === 'trends' && props.report[section])
+          sectionElements = [
+            <TrendList trends={props.report[section]} key={section} />,
+          ];
+        else if (reportContent[section].hasOwnProperty('elements'))
+          sectionElements = Object.keys(reportContent[section].elements)
+            .map((elementType: string) =>
+              reportContent[section].elements[elementType].reduce(
+                (
+                  resultArr: (JSX.Element | undefined)[],
+                  elementName: string,
+                ) => {
+                  if (
+                    props.report.hasOwnProperty(elementType) &&
+                    props.report[elementType].hasOwnProperty(elementName)
+                  )
+                    resultArr.push(
+                      getElement(
+                        elementType,
+                        elementName,
+                        props.report[elementType][elementName],
+                      ),
+                    );
+
+                  return resultArr;
+                },
+                [],
+              ),
+            )
+            .flat(1);
 
         if (sectionElements !== undefined && sectionElements.length > 0)
           return (

@@ -4,7 +4,7 @@ import Twitter from 'twitter';
 import Sentiment from 'sentiment';
 
 import { TWITTER } from '../config/config';
-import getReport from '../functions/getReport';
+import { getReport } from '../functions/getReport';
 import { statesGeocodes } from '../values/states';
 
 const sentiment = new Sentiment();
@@ -48,6 +48,7 @@ router.get(
           created_at: new Date().toISOString(),
         },
         ...(await getReport(tweets)),
+        trends: await getTrends(),
       },
     });
   },
@@ -64,16 +65,33 @@ const getTweets = async (q: any, until: any, state: any) => {
   });
 
   const tweets = data.statuses.map(
-    ({ text, created_at }: { text: string; created_at: string }) => {
-      return {
-        text,
-        sentiment: sentiment.analyze(text).score,
-        created_at,
-      };
-    },
+    ({ text, created_at }: { text: string; created_at: string }) => ({
+      text,
+      sentiment: sentiment.analyze(text).score,
+      created_at,
+    }),
   );
 
   return tweets;
+};
+
+const getTrends = async () => {
+  const data = await twitterClient.get('trends/place', {
+    id: 23424900,
+  });
+
+  const trendsData = data
+    .map((trend: any) =>
+      trend.trends.map((trend: any) => ({
+        name: trend.name,
+        tweetVolume: trend.tweet_volume,
+      })),
+    )
+    .flat(1)
+    .sort((a: any, b: any) => (a.tweetVolume < b.tweetVolume ? 1 : -1))
+    .slice(0, 10);
+
+  return trendsData;
 };
 
 export default router;

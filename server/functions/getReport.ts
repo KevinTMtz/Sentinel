@@ -31,7 +31,7 @@ const getAccumulatedSentiment = async (tweets: any[]) => {
   }
   return {
     id: 'Accumulated Sentiment',
-    series: [{ name: 'Total amount:', data }],
+    series: [{ name: 'Total amount', data }],
     categories,
     type: 'bar',
   };
@@ -83,7 +83,7 @@ const getGeneralSentimentMap = async (tweetsByState: any[]) => {
   return {
     type: 'Comparison',
     data: {
-      title: 'General sentiment per state ',
+      title: 'General sentiment per state',
       states,
       max,
       min,
@@ -92,7 +92,7 @@ const getGeneralSentimentMap = async (tweetsByState: any[]) => {
   };
 };
 
-const getReport = async (tweetsByState: any[]) => {
+export const getReport = async (tweetsByState: any[]) => {
   const allTweets = tweetsByState.reduce((arr, curr) => {
     return arr.concat(...Object.values(curr));
   }, []);
@@ -129,5 +129,3 @@ const getReport = async (tweetsByState: any[]) => {
     tweets: allTweets.slice(0, Math.min(allTweets.length, 10)),
   };
 };
-
-export default getReport;
