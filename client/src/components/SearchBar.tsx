@@ -26,7 +26,7 @@ interface SearchBarProps {
 const SearchBar = (props: SearchBarProps) => {
   const [topic, setTopic] = useState('');
   const [date, setDate] = useState(new Date());
-  const [location, setLocation] = useState<string>('Todos');
+  const [location, setLocation] = useState<string>('all');
 
   const search = () => {
     searchAndGetReport({
