@@ -7,41 +7,41 @@ interface DropdownProps {
 }
 
 export const Dropdown = (props: DropdownProps) => {
-  const mexicanStates = [
-    'Todos',
-    'Aguascalientes',
-    'Baja California',
-    'Baja California Sur',
-    'Campeche',
-    'Chiapas',
-    'Chihuahua',
-    'Coahuila',
-    'Colima',
-    'Ciudad de Mexico',
-    'Durango',
-    'Guanajuato',
-    'Guerrero',
-    'Hidalgo',
-    'Jalisco',
-    'Estado de Mexico',
-    'Michoacan',
-    'Morelos',
-    'Nayarit',
-    'Nuevo Leon',
-    'Oaxaca',
-    'Puebla',
-    'Queretaro',
-    'Quintana Roo',
-    'San Luis Potosi',
-    'Sinaloa',
-    'Sonora',
-    'Tabasco',
-    'Tamaulipas',
-    'Tlaxcala',
-    'Veracruz',
-    'Yucatan',
-    'Zacatecas',
-  ];
+  const statesAbvs: { [key: string]: string } = {
+    all: 'Todos',
+    agu: 'Aguascalientes',
+    bcn: 'Baja California',
+    bcs: 'Baja California Sur',
+    cam: 'Campeche',
+    chp: 'Chiapas',
+    chh: 'Chihuahua',
+    cmx: 'Ciudad de Mexico',
+    coa: 'Coahuila',
+    col: 'Colima',
+    dur: 'Durango',
+    gua: 'Guanajuato',
+    gro: 'Guerrero',
+    hid: 'Hidalgo',
+    jal: 'Jalisco',
+    mex: 'Estado de Mexico',
+    mic: 'Michoacan',
+    mor: 'Morelos',
+    nay: 'Nayarit',
+    nle: 'Nuevo Leon',
+    oax: 'Oaxaca',
+    pue: 'Puebla',
+    que: 'Queretaro',
+    roo: 'Quintana Roo',
+    slp: 'San Luis Potosi',
+    sin: 'Sinaloa',
+    son: 'Sonora',
+    tab: 'Tabasco',
+    tam: 'Tamaulipas',
+    tla: 'Tlaxcala',
+    ver: 'Veracruz',
+    yuc: 'Yucatan',
+    zac: 'Zacatecas',
+  };
 
   return (
     <FormControl sx={{ m: 1, width: 300 }}>
@@ -55,9 +55,9 @@ export const Dropdown = (props: DropdownProps) => {
           props.callback(event.target.value);
         }}
       >
-        {mexicanStates.map((state) => (
-          <MenuItem key={state} value={state}>
-            {state}
+        {Object.keys(statesAbvs).map((abv) => (
+          <MenuItem key={statesAbvs[abv]} value={abv}>
+            {statesAbvs[abv]}
           </MenuItem>
         ))}
       </Select>

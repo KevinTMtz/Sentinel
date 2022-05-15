@@ -35,7 +35,7 @@ const Report = (props: ReportProps) => {
       title: 'Sentiment analysis',
       elements: {
         charts: ['generalSentiment', 'accumulatedSentiment'],
-        maps: ['averageSentiment'],
+        maps: ['generalSentiments'],
       },
     },
     statistics: {
