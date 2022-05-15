@@ -2,6 +2,26 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 
+const chartStyle = {
+  maxWidth: '600px',
+  minWidth: '500px',
+  margin: 'auto',
+};
+
+const responsiveChartOption = [
+  {
+    breakpoint: 200,
+    options: {
+      chart: {
+        width: 400,
+      },
+      legend: {
+        position: 'bottom',
+      },
+    },
+  },
+];
+
 interface ReportChartProps {
   id: string;
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -29,16 +49,15 @@ const NonAxisReportChart = (props: ReportChartProps) => {
       horizontalAlign: 'center',
       floating: false,
     },
-    // TODO: Check responsive values
-    // responsive: {}
+    responsive: responsiveChartOption,
   };
 
   return (
     <ReactApexChart
-      width={'40%'}
       options={options}
       series={props.series}
       type={props.type}
+      style={chartStyle}
     />
   );
 };
@@ -85,16 +104,15 @@ const AxisReportChart = (props: ReportChartProps) => {
         offsetY: -35,
       },
     },
-    // TODO: Check responsive values
-    // responsive: {}
+    responsive: responsiveChartOption,
   };
 
   return (
     <ReactApexChart
-      width={'40%'}
       options={options}
       series={props.series}
       type={props.type}
+      style={chartStyle}
     />
   );
 };

@@ -1,4 +1,4 @@
-const getGeneralSentiment = (tweets: [any]) => {
+const getGeneralSentiment = (tweets: any[]) => {
   const series = tweets.reduce(
     (arr, curr) => {
       const s = curr.sentiment;
@@ -16,7 +16,7 @@ const getGeneralSentiment = (tweets: [any]) => {
   };
 };
 
-const getAccumulatedSentiment = (tweets: [any]) => {
+const getAccumulatedSentiment = (tweets: any[]) => {
   const ocurrances = tweets.reduce((acc, curr) => {
     const s = curr.sentiment;
     acc[s] ? acc[s]++ : (acc[s] = 1), acc;
@@ -73,7 +73,7 @@ const getAverageSentimentMap = () => {
   };
 };
 
-const getReport = (tweets: [any]) => {
+const getReport = (tweets: any[]) => {
   return {
     charts: {
       generalSentiment: getGeneralSentiment(tweets),
@@ -89,6 +89,7 @@ const getReport = (tweets: [any]) => {
       totalTweets: getTotalTweetsMap(),
       averageSentiment: getAverageSentimentMap(),
     },
+    tweets: tweets.slice(0, Math.min(tweets.length, 10)),
   };
 };
 
