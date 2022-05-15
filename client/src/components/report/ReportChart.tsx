@@ -2,6 +2,26 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 
+const chartStyle = {
+  maxWidth: '600px',
+  minWidth: '500px',
+  margin: 'auto',
+};
+
+const responsiveChartOption = [
+  {
+    breakpoint: 200,
+    options: {
+      chart: {
+        width: 400,
+      },
+      legend: {
+        position: 'bottom',
+      },
+    },
+  },
+];
+
 interface ReportChartProps {
   id: string;
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -29,16 +49,16 @@ const NonAxisReportChart = (props: ReportChartProps) => {
       horizontalAlign: 'center',
       floating: false,
     },
-    // TODO: Check responsive values
-    // responsive: {}
+    responsive: responsiveChartOption,
+    colors: ['#44bd32', '#ff3f34', '#80808066'],
   };
 
   return (
     <ReactApexChart
-      width={'40%'}
       options={options}
       series={props.series}
       type={props.type}
+      style={chartStyle}
     />
   );
 };
@@ -85,16 +105,26 @@ const AxisReportChart = (props: ReportChartProps) => {
         offsetY: -35,
       },
     },
-    // TODO: Check responsive values
-    // responsive: {}
+    colors: [
+      function ({ dataPointIndex }: { dataPointIndex: number }) {
+        if (dataPointIndex - 1 < 0) {
+          return '#ff3f34';
+        } else if (dataPointIndex - 1 === 0) {
+          return '#80808066';
+        } else {
+          return '#44bd32';
+        }
+      },
+    ],
+    responsive: responsiveChartOption,
   };
 
   return (
     <ReactApexChart
-      width={'40%'}
       options={options}
       series={props.series}
       type={props.type}
+      style={chartStyle}
     />
   );
 };

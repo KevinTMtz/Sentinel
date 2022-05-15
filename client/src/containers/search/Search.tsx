@@ -7,12 +7,15 @@ import Report from '../../components/report/Report';
 import { firebaseAuth } from '../../config/firebase';
 import { createReport, deleteReport } from '../../functions/firestore/reports';
 import { styles } from '../../styles/styles';
+import Spinner from '../../components/utils/Spinner';
 
 const Search = () => {
   const [currentUser, setCurrentUser] = useState<User | null>();
 
   const [report, setReport] = useState<any>();
   const [reportId, setReportId] = useState<string>('');
+
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
@@ -40,27 +43,31 @@ const Search = () => {
 
   return (
     <div>
-      <SearchBar setReport={setReport} />
-      {report && (
-        <>
-          <Box sx={{ margin: '16px 0px', ...styles.displayRowsButtons }}>
-            {reportId !== '' ? (
-              <Button
-                variant='contained'
-                color='error'
-                fullWidth
-                onClick={unsaveReport}
-              >
-                Delete Report
-              </Button>
-            ) : (
-              <Button variant='contained' fullWidth onClick={saveReport}>
-                Save Report
-              </Button>
-            )}
-          </Box>
-          <Report report={report} />
-        </>
+      <SearchBar setReport={setReport} setLoading={setLoading} />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        report && (
+          <>
+            <Box sx={{ margin: '16px 0px', ...styles.displayRowsButtons }}>
+              {reportId !== '' ? (
+                <Button
+                  variant='contained'
+                  color='error'
+                  fullWidth
+                  onClick={unsaveReport}
+                >
+                  Delete Report
+                </Button>
+              ) : (
+                <Button variant='contained' fullWidth onClick={saveReport}>
+                  Save Report
+                </Button>
+              )}
+            </Box>
+            <Report report={report} />
+          </>
+        )
       )}
     </div>
   );

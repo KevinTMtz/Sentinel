@@ -1,4 +1,4 @@
-const getGeneralSentiment = async (tweets: [any]) => {
+const getGeneralSentiment = async (tweets: any[]) => {
   const series = tweets.reduce(
     (arr, curr) => {
       const s = curr.sentiment;
@@ -16,7 +16,7 @@ const getGeneralSentiment = async (tweets: [any]) => {
   };
 };
 
-const getAccumulatedSentiment = async (tweets: [any]) => {
+const getAccumulatedSentiment = async (tweets: any[]) => {
   const ocurrances = tweets.reduce((acc, curr) => {
     const s = curr.sentiment;
     acc[s] ? acc[s]++ : (acc[s] = 1), acc;
@@ -60,7 +60,7 @@ const getTotalTweetsMap = async (tweetsByState: any[]) => {
 };
 
 // TODO: Add dynamic information
-const getAverageSentimentMap = async (tweetsByState: any[]) => {
+const getGeneralSentimentMap = async (tweetsByState: any[]) => {
   var max = Number.MIN_VALUE;
   var min = Number.MAX_VALUE;
 
@@ -68,7 +68,8 @@ const getAverageSentimentMap = async (tweetsByState: any[]) => {
     const key = Object.keys(curr)[0];
 
     const sentiment = curr[key].reduce(
-      (total: any, curr: any) => total + curr.sentiment,
+      (total: any, curr: any) =>
+        total + (curr.sentiment > 0 ? 1 : curr.sentiment < 0 ? -1 : 0),
       0,
     );
 
@@ -82,11 +83,11 @@ const getAverageSentimentMap = async (tweetsByState: any[]) => {
   return {
     type: 'Comparison',
     data: {
-      title: 'Average sentiment per state ',
+      title: 'General sentiment per state ',
       states,
       max,
       min,
-      label: 'Average sentiment',
+      label: 'General sentiment',
     },
   };
 };
@@ -100,14 +101,14 @@ const getReport = async (tweetsByState: any[]) => {
     getGeneralSentiment(allTweets),
     getAccumulatedSentiment(allTweets),
     getTotalTweetsMap(tweetsByState),
-    getAverageSentimentMap(tweetsByState),
+    getGeneralSentimentMap(tweetsByState),
   ];
 
   const [
     generalSentiment,
     accumulatedSentiment,
     totalTweets,
-    averageSentiment,
+    generalSentiments,
   ] = await Promise.all(promises);
 
   return {
@@ -123,8 +124,9 @@ const getReport = async (tweetsByState: any[]) => {
     maps: {
       // TODO: Add useful maps
       totalTweets,
-      averageSentiment,
+      generalSentiments,
     },
+    tweets: allTweets.slice(0, Math.min(allTweets.length, 10)),
   };
 };
 

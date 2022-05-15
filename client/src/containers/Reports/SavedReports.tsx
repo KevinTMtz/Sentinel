@@ -27,7 +27,11 @@ const SavedReports = () => {
             tempReports.push({ id: report.id, ...report.data() });
           });
 
-          setReports(tempReports);
+          setReports(
+            tempReports.sort((a, b) =>
+              a.query.created_at < b.query.created_at ? 1 : -1,
+            ),
+          );
         },
         (error) => console.log(error.message),
       );

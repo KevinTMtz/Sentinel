@@ -21,6 +21,7 @@ const wideSearchBar = {
 
 interface SearchBarProps {
   setReport: Dispatch<any>;
+  setLoading: Dispatch<boolean>;
 }
 
 const SearchBar = (props: SearchBarProps) => {
@@ -29,6 +30,7 @@ const SearchBar = (props: SearchBarProps) => {
   const [location, setLocation] = useState<string>('all');
 
   const search = () => {
+    props.setLoading(true);
     searchAndGetReport({
       topic: topic,
       location: location,
@@ -36,6 +38,7 @@ const SearchBar = (props: SearchBarProps) => {
     }).then(
       (res: any) => {
         props.setReport(res.data.report);
+        props.setLoading(false);
       },
       (err: any) => {
         console.log(err);
