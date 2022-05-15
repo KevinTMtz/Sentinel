@@ -31,7 +31,7 @@ router.get(
         lang: 'es',
         // geocode: '23.62538105,-102.27326622460241,800km',
       })
-      .then((data) => {
+      .then(async (data) => {
         const tweets = data.statuses.map(
           ({
             text,
@@ -58,7 +58,7 @@ router.get(
               until,
               created_at: new Date().toISOString(),
             },
-            ...getReport(tweets),
+            ...(await getReport(tweets)),
           },
         });
       })
