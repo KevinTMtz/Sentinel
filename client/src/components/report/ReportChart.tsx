@@ -50,6 +50,7 @@ const NonAxisReportChart = (props: ReportChartProps) => {
       floating: false,
     },
     responsive: responsiveChartOption,
+    colors: ['#44bd32', '#ff3f34', '#80808066'],
   };
 
   return (
@@ -104,6 +105,17 @@ const AxisReportChart = (props: ReportChartProps) => {
         offsetY: -35,
       },
     },
+    colors: [
+      function ({ dataPointIndex }: { dataPointIndex: number }) {
+        if (dataPointIndex - 1 < 0) {
+          return '#ff3f34';
+        } else if (dataPointIndex - 1 === 0) {
+          return '#80808066';
+        } else {
+          return '#44bd32';
+        }
+      },
+    ],
     responsive: responsiveChartOption,
   };
 

@@ -35,13 +35,13 @@ const Report = (props: ReportProps) => {
       title: 'Sentiment analysis',
       elements: {
         charts: ['generalSentiment', 'accumulatedSentiment'],
-        maps: ['totalTweets'],
+        maps: ['averageSentiment'],
       },
     },
     statistics: {
       title: 'Statistics',
       elements: {
-        maps: ['averageSentiment'],
+        maps: ['totalTweets'],
       },
     },
     tweets: { title: 'Tweets sample' },
