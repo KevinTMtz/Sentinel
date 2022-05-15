@@ -38,7 +38,7 @@ const getAccumulatedSentiment = async (tweets: [any]) => {
 };
 
 // TODO: Add dynamic information
-const getTotalTweetsMap = async () => {
+const getTotalTweetsMap = async (tweets: any[]) => {
   return {
     type: 'Heat',
     data: {
@@ -54,7 +54,7 @@ const getTotalTweetsMap = async () => {
 };
 
 // TODO: Add dynamic information
-const getAverageSentimentMap = async () => {
+const getAverageSentimentMap = async (tweets: any[]) => {
   return {
     type: 'Comparison',
     data: {
@@ -73,12 +73,16 @@ const getAverageSentimentMap = async () => {
   };
 };
 
-const getReport = async (tweets: [any]) => {
+const getReport = async (tweetsByState: any[]) => {
+  const allTweets = tweetsByState.reduce((arr, curr) => {
+    return arr.concat(...Object.values(curr));
+  }, []);
+
   const promises = [
-    getGeneralSentiment(tweets),
-    getAccumulatedSentiment(tweets),
-    getTotalTweetsMap(),
-    getAverageSentimentMap(),
+    getGeneralSentiment(allTweets),
+    getAccumulatedSentiment(allTweets),
+    getTotalTweetsMap(tweetsByState),
+    getAverageSentimentMap(tweetsByState),
   ];
 
   const [
@@ -96,7 +100,7 @@ const getReport = async (tweets: [any]) => {
     },
     statistics: {
       // TODO: Add useful statistics
-      total: tweets.length,
+      total: allTweets.length,
     },
     maps: {
       // TODO: Add useful maps
