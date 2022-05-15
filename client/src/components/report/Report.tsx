@@ -42,6 +42,7 @@ const Report = (props: ReportProps) => {
     statistics: {
       title: 'Statistics',
       elements: {
+        charts: ['tweetsCount'],
         maps: ['totalTweets'],
       },
     },

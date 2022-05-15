@@ -37,6 +37,21 @@ const getAccumulatedSentiment = async (tweets: any[]) => {
   };
 };
 
+export const getTweetCount = async (tweetCount: any) => {
+  const data = tweetCount.data.map((count: any) => count.tweet_count);
+
+  const categories = tweetCount.data.map((count: any) =>
+    new Date(count.start).toLocaleDateString(),
+  );
+
+  return {
+    id: 'Daily tweet count',
+    series: [{ name: 'Total amount', data }],
+    categories,
+    type: 'bar',
+  };
+};
+
 // TODO: Add dynamic information
 const getTotalTweetsMap = async (tweetsByState: any[]) => {
   var max = 0;
@@ -92,7 +107,7 @@ const getGeneralSentimentMap = async (tweetsByState: any[]) => {
   };
 };
 
-export const getReport = async (tweetsByState: any[]) => {
+export const getReport = async (tweetsByState: any[], tweetCount: any[]) => {
   const allTweets = tweetsByState.reduce((arr, curr) => {
     return arr.concat(...Object.values(curr));
   }, []);
@@ -100,6 +115,7 @@ export const getReport = async (tweetsByState: any[]) => {
   const promises = [
     getGeneralSentiment(allTweets),
     getAccumulatedSentiment(allTweets),
+    getTweetCount(tweetCount),
     getTotalTweetsMap(tweetsByState),
     getGeneralSentimentMap(tweetsByState),
   ];
@@ -107,6 +123,7 @@ export const getReport = async (tweetsByState: any[]) => {
   const [
     generalSentiment,
     accumulatedSentiment,
+    tweetsCount,
     totalTweets,
     generalSentiments,
   ] = await Promise.all(promises);
@@ -115,6 +132,7 @@ export const getReport = async (tweetsByState: any[]) => {
     charts: {
       generalSentiment,
       accumulatedSentiment,
+      tweetsCount,
       // TODO: Add more functions per chart or statistic
     },
     statistics: {

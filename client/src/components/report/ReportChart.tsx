@@ -114,8 +114,10 @@ const AxisReportChart = (props: ReportChartProps) => {
             return '#ff3f34';
           } else if (categoryNum > 0) {
             return '#44bd32';
-          } else {
+          } else if (categoryNum === 0) {
             return '#80808066';
+          } else {
+            return '#1976d2';
           }
         }
       },
