@@ -7,3 +7,8 @@ export interface ReportSearchProps {
   location: string | undefined;
   until: Date | undefined;
 }
+
+export interface Trend {
+  name: string;
+  tweetVolume: number;
+}

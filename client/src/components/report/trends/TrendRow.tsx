@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
+import { Trend } from '../../../types/types';
+
 const rowStyle = {
   padding: '8px',
   transition: 'all 0.2s ease-out',
@@ -8,29 +10,23 @@ const rowStyle = {
   border: '1px solid #3874CB',
   borderRadius: '4px',
   margin: '8px 0px',
+  maxWidth: '200px',
+  width: 'auto',
 };
 
-interface TweetRowProps {
-  text: string;
-  sentiment: number;
+interface TrendRowProps {
+  trend: Trend;
 }
 
-const TweetRow = (props: TweetRowProps) => (
+const TrendRow = (props: TrendRowProps) => (
   <Box sx={rowStyle}>
     <Typography variant='subtitle1' textAlign='center'>
-      {props.text}
+      {props.trend.name}
     </Typography>
     <Typography variant='subtitle2' textAlign='center'>
-      <strong>
-        Sentiment:{' '}
-        {props.sentiment === 0
-          ? 'Neutral'
-          : props.sentiment > 0
-          ? 'Positive'
-          : 'Negative'}
-      </strong>
+      <strong>Tweet volume: {props.trend.tweetVolume}</strong>
     </Typography>
   </Box>
 );
 
-export default TweetRow;
+export default TrendRow;
