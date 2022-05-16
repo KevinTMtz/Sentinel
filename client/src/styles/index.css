@@ -8,3 +8,142 @@ body {
 * {
   box-sizing: border-box;
 }
+
+h1 {
+  margin: 8px 0px;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0px 32px;
+}
+
+@media only screen and (max-width: 859px) {
+  .container {
+    padding: 0 15px;
+  }
+}
+.semiBold {
+  font-weight: 600 !important;
+}
+.extraBold {
+  font-weight: 800 !important;
+}
+
+/* HELLPERS */
+.animate {
+  transition: 0.3s ease;
+}
+.pointer {
+  cursor: pointer;
+}
+.relative {
+  position: relative;
+}
+.textRight {
+  text-align: right;
+}
+.shadow {
+  box-shadow: 0 0 15px rgba(237, 232, 237, 0.5);
+  -webkit-box-shadow: 0 0 15px rgba(237, 232, 237, 0.5);
+  -moz-box-shadow: 0 0 15px rgba(237, 232, 237, 0.5);
+}
+
+/* FLEXBOX */
+.flex {
+  display: flex;
+}
+
+.flexSpaceCenter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flexNullCenter {
+  display: flex;
+  align-items: center;
+}
+
+.flexColumn {
+  flex-direction: column;
+}
+
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexSpaceNull {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* FONT SIZES */
+.font14 {
+  font-size: 0.875rem;
+}
+.font15 {
+  font-size: 0.938rem;
+}
+.font20 {
+  font-size: 1.25rem;
+}
+.font30 {
+  font-size: 1.875rem;
+}
+.font40 {
+  font-size: 2.5rem;
+}
+.font60 {
+  font-size: 3.75rem;
+  line-height: 4.5rem;
+}
+@media only screen and (max-width: 859px) {
+  .font14 {
+    font-size: 0.813rem;
+  }
+  .font15 {
+    font-size: 0.813rem;
+  }
+  .font20 {
+    font-size: 1.125rem;
+  }
+  .font30 {
+    font-size: 1.5rem;
+  }
+  .font40 {
+    font-size: 1.875rem;
+  }
+  .font60 {
+    font-size: 2.8rem;
+  }
+}
+
+/* BORDER RADIUS */
+.radius8 {
+  border-radius: 1rem;
+}
+
+/* COLORS */
+.orangeColor {
+  color: #f2b300;
+}
+.whiteColor {
+  color: #fff;
+}
+
+/* BACKGROUNDS */
+.darkBg {
+  background-color: #0b093b;
+}
