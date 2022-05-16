@@ -26,12 +26,8 @@ import Register from './containers/auth/Register';
 import { firebaseAuth } from './config/firebase';
 import UserAccount from './containers/account/UserAccount';
 import Search from './containers/search/Search';
-import Reports from './containers/Reports/Reports';
-import ManageReport from './containers/Reports/ManageReport';
-
-const appStyle = {
-  padding: '16px 32px',
-};
+import Reports from './containers/reports/Reports';
+import ManageReport from './containers/reports/ManageReport';
 
 const App = () => {
   const navigate = useNavigate();
@@ -50,6 +46,10 @@ const App = () => {
     setAnchorEl(null);
   };
 
+  const appStyle = {
+    padding: location.pathname === '/' ? '0' : '16px 32px',
+  };
+
   return (
     <Box>
       <AppBar position='static'>
@@ -58,7 +58,7 @@ const App = () => {
             variant='h6'
             component='div'
             sx={{ flexGrow: 1, cursor: 'pointer' }}
-            onClick={() => navigate(currentUser ? '/search' : '/')}
+            onClick={() => navigate('/')}
           >
             Sentinel
           </Typography>
