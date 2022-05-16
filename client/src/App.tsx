@@ -26,8 +26,8 @@ import Register from './containers/auth/Register';
 import { firebaseAuth } from './config/firebase';
 import UserAccount from './containers/account/UserAccount';
 import Search from './containers/search/Search';
-import Reports from './containers/reports/Reports';
-import ManageReport from './containers/reports/ManageReport';
+import Reports from './containers/report/Reports';
+import ManageReport from './containers/report/ManageReport';
 
 const App = () => {
   const navigate = useNavigate();
