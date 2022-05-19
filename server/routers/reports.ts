@@ -21,7 +21,7 @@ router.get(
   '/search',
   query('topic').isString(),
   query('until').isISO8601().toDate(),
-  query('topic').isString().isLength({ min: 3 }),
+  query('location').isString().isLength({ min: 3 }),
   async (req: Request, res: Response) => {
     if (!validationResult(req).isEmpty()) {
       return res.status(400).json({ msg: 'Invalid request data' });
@@ -29,20 +29,26 @@ router.get(
 
     const { topic, until, location } = req.query;
 
-    const states =
-      location === 'all' ? Object.keys(statesGeocodes) : [location];
+    const states = (
+      location === 'all' ? Object.keys(statesGeocodes) : [location]
+    ) as string[];
 
-    const tweets = [];
+    const allTweets: any[] = [];
+    const tweetsByState: any[] = [];
 
-    for (var state of states) {
-      tweets.push({
-        [state as string]: await getTweets(
-          topic,
-          until,
-          statesGeocodes[state as string],
-        ),
+    const promises = states.map((state) => {
+      return getTweets(topic, until, state);
+    });
+
+    (await Promise.all(promises)).map((result) => {
+      const [stateAbv, tweets] = result;
+
+      tweetsByState.push({
+        [stateAbv]: tweets,
       });
-    }
+
+      allTweets.push(...tweets);
+    });
 
     const tweetCount = await getTweetCount(topic, until);
 
@@ -54,14 +60,15 @@ router.get(
           until,
           created_at: new Date().toISOString(),
         },
-        ...(await getReport(tweets, tweetCount)),
+        ...(await getReport(allTweets, tweetsByState, tweetCount)),
         trends: await getTrends(),
       },
     });
   },
 );
 
-const getTweets = async (q: any, until: any, state: any) => {
+const getTweets = async (q: any, until: any, stateAbv: string) => {
+  const state = statesGeocodes[stateAbv as string];
   const data = await twitterClient.get('search/tweets', {
     q,
     until,
@@ -79,7 +86,7 @@ const getTweets = async (q: any, until: any, state: any) => {
     }),
   );
 
-  return tweets;
+  return [stateAbv, tweets];
 };
 
 const getTweetCount = async (q: any, until: any) => {
