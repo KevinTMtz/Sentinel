@@ -105,13 +105,13 @@ const getGeneralSentimentMap = async (tweetsByState: any[]) => {
 };
 
 export const getReport = async (
-  tweets: any[],
+  allTweets: any[],
   tweetsByState: any[],
   tweetCount: any[],
 ) => {
   const promises = [
-    getGeneralSentiment(tweets),
-    getAccumulatedSentiment(tweets),
+    getGeneralSentiment(allTweets),
+    getAccumulatedSentiment(allTweets),
     getTweetCount(tweetCount),
     getTotalTweetsMap(tweetsByState),
     getGeneralSentimentMap(tweetsByState),
@@ -134,13 +134,13 @@ export const getReport = async (
     },
     statistics: {
       // TODO: Add useful statistics
-      total: tweets.length,
+      total: allTweets.length,
     },
     maps: {
       // TODO: Add useful maps
       totalTweets,
       generalSentiments,
     },
-    tweets: tweets.slice(0, Math.min(tweets.length, 10)),
+    tweets: allTweets.slice(0, Math.min(allTweets.length, 10)),
   };
 };

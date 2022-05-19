@@ -21,7 +21,7 @@ router.get(
   '/search',
   query('topic').isString(),
   query('until').isISO8601().toDate(),
-  query('topic').isString().isLength({ min: 3 }),
+  query('location').isString().isLength({ min: 3 }),
   async (req: Request, res: Response) => {
     if (!validationResult(req).isEmpty()) {
       return res.status(400).json({ msg: 'Invalid request data' });
@@ -32,21 +32,23 @@ router.get(
     const states =
       location === 'all' ? Object.keys(statesGeocodes) : [location];
 
-    const tweets = [];
-    const tweetsByState = [];
+    const allTweets: any[] = [];
+    const tweetsByState: any[] = [];
+
+    const promises = [];
 
     for (var state of states) {
-      const result = await getTweets(
-        topic,
-        until,
-        statesGeocodes[state as string],
-      );
+      promises.push(getTweets(topic, until, state as string));
+    }
+
+    (await Promise.all(promises)).map((result) => {
+      const [stateAbv, tweets] = result;
       tweetsByState.push({
-        [state as string]: result,
+        [stateAbv]: tweets,
       });
 
-      tweets.push(...result);
-    }
+      allTweets.push(...tweets);
+    });
 
     const tweetCount = await getTweetCount(topic, until);
 
@@ -58,14 +60,15 @@ router.get(
           until,
           created_at: new Date().toISOString(),
         },
-        ...(await getReport(tweets, tweetsByState, tweetCount)),
+        ...(await getReport(allTweets, tweetsByState, tweetCount)),
         trends: await getTrends(),
       },
     });
   },
 );
 
-const getTweets = async (q: any, until: any, state: any) => {
+const getTweets = async (q: any, until: any, stateAbv: string) => {
+  const state = statesGeocodes[stateAbv as string];
   const data = await twitterClient.get('search/tweets', {
     q,
     until,
@@ -83,7 +86,7 @@ const getTweets = async (q: any, until: any, state: any) => {
     }),
   );
 
-  return tweets;
+  return [stateAbv, tweets];
 };
 
 const getTweetCount = async (q: any, until: any) => {
