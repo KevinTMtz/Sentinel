@@ -29,20 +29,20 @@ router.get(
 
     const { topic, until, location } = req.query;
 
-    const states =
-      location === 'all' ? Object.keys(statesGeocodes) : [location];
+    const states = (
+      location === 'all' ? Object.keys(statesGeocodes) : [location]
+    ) as string[];
 
     const allTweets: any[] = [];
     const tweetsByState: any[] = [];
 
-    const promises = [];
-
-    for (var state of states) {
-      promises.push(getTweets(topic, until, state as string));
-    }
+    const promises = states.map((state) => {
+      return getTweets(topic, until, state);
+    });
 
     (await Promise.all(promises)).map((result) => {
       const [stateAbv, tweets] = result;
+
       tweetsByState.push({
         [stateAbv]: tweets,
       });
