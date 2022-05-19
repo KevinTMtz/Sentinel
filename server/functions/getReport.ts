@@ -5,7 +5,6 @@ const getGeneralSentiment = async (tweets: any[]) => {
       s > 0 ? arr[0]++ : s < 0 ? arr[1]++ : arr[2]++;
       return arr;
     },
-    // TODO: Check range of values for sentiment
     [0, 0, 0],
   );
   return {
@@ -52,7 +51,6 @@ export const getTweetCount = async (tweetCount: any) => {
   };
 };
 
-// TODO: Add dynamic information
 const getTotalTweetsMap = async (tweetsByState: any[]) => {
   var max = 0;
   const states = tweetsByState.reduce((acc, curr) => {
@@ -74,7 +72,6 @@ const getTotalTweetsMap = async (tweetsByState: any[]) => {
   };
 };
 
-// TODO: Add dynamic information
 const getGeneralSentimentMap = async (tweetsByState: any[]) => {
   var max = Number.MIN_VALUE;
   var min = Number.MAX_VALUE;
@@ -107,14 +104,14 @@ const getGeneralSentimentMap = async (tweetsByState: any[]) => {
   };
 };
 
-export const getReport = async (tweetsByState: any[], tweetCount: any[]) => {
-  const allTweets = tweetsByState.reduce((arr, curr) => {
-    return arr.concat(...Object.values(curr));
-  }, []);
-
+export const getReport = async (
+  tweets: any[],
+  tweetsByState: any[],
+  tweetCount: any[],
+) => {
   const promises = [
-    getGeneralSentiment(allTweets),
-    getAccumulatedSentiment(allTweets),
+    getGeneralSentiment(tweets),
+    getAccumulatedSentiment(tweets),
     getTweetCount(tweetCount),
     getTotalTweetsMap(tweetsByState),
     getGeneralSentimentMap(tweetsByState),
@@ -137,13 +134,13 @@ export const getReport = async (tweetsByState: any[], tweetCount: any[]) => {
     },
     statistics: {
       // TODO: Add useful statistics
-      total: allTweets.length,
+      total: tweets.length,
     },
     maps: {
       // TODO: Add useful maps
       totalTweets,
       generalSentiments,
     },
-    tweets: allTweets.slice(0, Math.min(allTweets.length, 10)),
+    tweets: tweets.slice(0, Math.min(tweets.length, 10)),
   };
 };

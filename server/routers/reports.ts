@@ -33,15 +33,19 @@ router.get(
       location === 'all' ? Object.keys(statesGeocodes) : [location];
 
     const tweets = [];
+    const tweetsByState = [];
 
     for (var state of states) {
-      tweets.push({
-        [state as string]: await getTweets(
-          topic,
-          until,
-          statesGeocodes[state as string],
-        ),
+      const result = await getTweets(
+        topic,
+        until,
+        statesGeocodes[state as string],
+      );
+      tweetsByState.push({
+        [state as string]: result,
       });
+
+      tweets.push(...result);
     }
 
     const tweetCount = await getTweetCount(topic, until);
@@ -54,7 +58,7 @@ router.get(
           until,
           created_at: new Date().toISOString(),
         },
-        ...(await getReport(tweets, tweetCount)),
+        ...(await getReport(tweets, tweetsByState, tweetCount)),
         trends: await getTrends(),
       },
     });
