@@ -24,6 +24,8 @@ const emptyQuery: ReportSearchQuery = {
 
 const emptySubConfig: SubscriptionConfig = {
   periodicy: 'weekly',
+  startDate: new Date(),
+  isActive: true,
 };
 
 const Search = () => {
@@ -65,7 +67,7 @@ const Search = () => {
       );
   };
 
-  const search = () => {
+  const search = async () => {
     setLoading(true);
     searchAndGetReport(query).then(
       (res: any) => {
@@ -110,6 +112,7 @@ const Search = () => {
     setSubConfig(emptySubConfig);
     setReport(null);
     setReportId('');
+    setSubscriptionId('');
   };
 
   return (

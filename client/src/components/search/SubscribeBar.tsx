@@ -1,14 +1,17 @@
 import React, { Dispatch } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { Periodicy, SubscriptionConfig } from '../../types/types';
-import { Dropdown } from './Dropdown';
+import { Dropdown } from '../utils/Dropdown';
 
 const subscribeBarContainer = {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
+  gap: '8px',
 };
 
 const periodicies: { [key: string]: string } = {
@@ -25,6 +28,21 @@ interface SubscribeBarProps {
 
 const SubscribeBar = (props: SubscribeBarProps) => (
   <Box sx={subscribeBarContainer}>
+    <Box sx={{ minWidth: '236px' }}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DateTimePicker
+          label='Start date'
+          disableFuture
+          value={props.subConfig.startDate}
+          onChange={(value) =>
+            value &&
+            props.setSubConfig({ ...props.subConfig, startDate: value })
+          }
+          renderInput={(params) => <TextField {...params} />}
+        />
+      </LocalizationProvider>
+    </Box>
+
     <Dropdown
       name='Periodicy'
       values={periodicies}
@@ -36,6 +54,7 @@ const SubscribeBar = (props: SubscribeBarProps) => (
         });
       }}
     />
+
     <Button
       sx={{ height: '56px' }}
       fullWidth

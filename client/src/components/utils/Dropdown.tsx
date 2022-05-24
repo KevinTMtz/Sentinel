@@ -9,7 +9,7 @@ interface DropdownProps {
 }
 
 export const Dropdown = (props: DropdownProps) => (
-  <FormControl sx={{ m: 1, width: 300 }}>
+  <FormControl sx={{ minWidth: '236px' }}>
     <InputLabel>{props.name}</InputLabel>
     <Select
       value={props.value}

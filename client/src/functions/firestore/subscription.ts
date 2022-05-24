@@ -10,10 +10,11 @@ import {
 } from 'firebase/firestore/lite';
 
 import { firestore } from '../../config/firebase';
+import { Subscription } from '../../types/types';
 
 export const createSubscription = async (
   userId: string,
-  subscription: any,
+  subscription: Subscription,
 ): Promise<DocumentReference<any>> =>
   await addDoc(
     collection(firestore, `reportSubscriptions/${userId}/subscriptions`),

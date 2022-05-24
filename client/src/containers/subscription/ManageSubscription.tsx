@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { User } from 'firebase/auth';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
-import { firebaseAuth } from '../../config/firebase';
-import { getReports } from '../../functions/firestore/reports';
 import ReportRow from '../../components/report/ReportRow';
+import { firebaseAuth } from '../../config/firebase';
+import { DocumentData } from 'firebase/firestore/lite';
 import { styles } from '../../styles/styles';
+import { getSubscriptionReports } from '../../functions/firestore/subscription';
+import Title from '../../components/ui/Title';
 
-const SavedReports = () => {
+const ManageSubscription = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [currentUser, setCurrentUser] = useState<User | null>();
 
@@ -17,13 +20,17 @@ const SavedReports = () => {
 
   firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
+  const subscriptionId = location.pathname.substring(
+    location.pathname.lastIndexOf('/') + 1,
+  );
+
   useEffect(() => {
     if (currentUser?.uid)
-      getReports(currentUser?.uid).then(
+      getSubscriptionReports(currentUser?.uid, subscriptionId).then(
         (querySnapshot) => {
           const tempReports: any[] = [];
 
-          querySnapshot.forEach((report: any) => {
+          querySnapshot.forEach((report: DocumentData) => {
             tempReports.push({ id: report.id, ...report.data() });
           });
 
@@ -33,15 +40,26 @@ const SavedReports = () => {
             ),
           );
         },
-        (error) => console.log(error.message),
+        (err) => console.log(err.message),
       );
-  }, [currentUser?.uid]);
+  }, [currentUser?.uid, subscriptionId]);
 
   return (
     <Box sx={{ ...styles.displayRowsButtons, marginTop: '16px' }}>
+      <Title>Subscription</Title>
+      <Box sx={{ marginBottom: '16px', ...styles.displayRowsButtons }}>
+        <Button
+          variant='outlined'
+          color='primary'
+          fullWidth
+          onClick={() => navigate('/subscriptions')}
+        >
+          Go back
+        </Button>
+      </Box>
       {reports.length === 0 ? (
         <Typography variant='h6' textAlign='center' sx={{ marginTop: '32px' }}>
-          You do not have any saved reports
+          This subscription does not have any reports
         </Typography>
       ) : (
         reports.map((report, index) => (
@@ -57,4 +75,4 @@ const SavedReports = () => {
   );
 };
 
-export default SavedReports;
+export default ManageSubscription;

@@ -12,6 +12,14 @@ export type Periodicy = 'daily' | 'weekly' | 'monthly';
 
 export interface SubscriptionConfig {
   periodicy: Periodicy;
+  startDate: Date;
+  isActive: Boolean;
+}
+
+export interface Subscription {
+  id?: string | undefined;
+  config: SubscriptionConfig;
+  query: ReportSearchQuery;
 }
 
 export interface Trend {

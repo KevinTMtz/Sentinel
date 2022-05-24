@@ -28,6 +28,8 @@ import UserAccount from './containers/account/UserAccount';
 import Search from './containers/search/Search';
 import Reports from './containers/report/Reports';
 import ManageReport from './containers/report/ManageReport';
+import Subscriptions from './containers/subscription/Subscriptions';
+import ManageSubscription from './containers/subscription/ManageSubscription';
 
 const App = () => {
   const navigate = useNavigate();
@@ -73,6 +75,12 @@ const App = () => {
                 onClick={() => navigate('/search-reports')}
               >
                 Reports
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => navigate('/subscriptions')}
+              >
+                Subscriptions
               </Button>
             </>
           )}
@@ -182,6 +190,25 @@ const App = () => {
                 element={
                   <RequireAuth>
                     <ManageReport />
+                  </RequireAuth>
+                }
+              />
+            </Route>
+
+            <Route path='subscriptions'>
+              <Route
+                path=''
+                element={
+                  <RequireAuth>
+                    <Subscriptions />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path=':id'
+                element={
+                  <RequireAuth>
+                    <ManageSubscription />
                   </RequireAuth>
                 }
               />

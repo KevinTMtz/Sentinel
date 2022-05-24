@@ -3,30 +3,31 @@ import { useNavigate } from 'react-router-dom';
 import { User } from 'firebase/auth';
 import { Box, Typography } from '@mui/material';
 
-import ReportRow from '../../components/report/ReportRow';
 import { firebaseAuth } from '../../config/firebase';
-import { DocumentData } from 'firebase/firestore/lite';
-import { getReports } from '../../functions/firestore/reports';
 import { styles } from '../../styles/styles';
+import { getSubscriptions } from '../../functions/firestore/subscription';
+import { Subscription } from '../../types/types';
+import SubscriptionRow from '../../components/subscription/SubscriptionRow';
+import { DocumentData } from 'firebase/firestore/lite';
 import Title from '../../components/ui/Title';
 
-const Reports = () => {
+const Subscriptions = () => {
   const navigate = useNavigate();
 
   const [currentUser, setCurrentUser] = useState<User | null>();
 
-  const [reports, setReports] = useState<any[]>([]);
+  const [reports, setReports] = useState<Subscription[]>([]);
 
   firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
   useEffect(() => {
     if (currentUser?.uid)
-      getReports(currentUser?.uid).then(
+      getSubscriptions(currentUser?.uid).then(
         (querySnapshot) => {
           const tempReports: any[] = [];
 
-          querySnapshot.forEach((report: DocumentData) => {
-            tempReports.push({ id: report.id, ...report.data() });
+          querySnapshot.forEach((subscription: DocumentData) => {
+            tempReports.push({ id: subscription.id, ...subscription.data() });
           });
 
           setReports(
@@ -41,18 +42,17 @@ const Reports = () => {
 
   return (
     <Box sx={{ ...styles.displayRowsButtons, marginTop: '16px' }}>
-      <Title>Saved reports</Title>
+      <Title>Subscriptions</Title>
       {reports.length === 0 ? (
         <Typography variant='h6' textAlign='center' sx={{ marginTop: '32px' }}>
-          You do not have any saved reports
+          You do not have any subscriptions
         </Typography>
       ) : (
-        reports.map((report, index) => (
-          <ReportRow
+        reports.map((subscription, index) => (
+          <SubscriptionRow
             key={`report-${index}`}
-            report={report.query}
-            createdAt={report.query.created_at}
-            onClick={() => navigate(report.id)}
+            subscription={subscription}
+            onClick={() => subscription.id && navigate(subscription.id)}
           />
         ))
       )}
@@ -60,4 +60,4 @@ const Reports = () => {
   );
 };
 
-export default Reports;
+export default Subscriptions;
