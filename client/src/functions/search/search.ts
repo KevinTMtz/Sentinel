@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import { ReportSearchProps } from '../../types/types';
+import { ReportSearchQuery } from '../../types/types';
 
 export const searchAndGetReport = async (
-  reportSearchProps: ReportSearchProps,
+  reportSearchProps: ReportSearchQuery,
 ) => {
   return await axios('/reports/search', {
     method: 'GET',
