@@ -4,6 +4,8 @@ import path from 'path';
 
 import reportsRouter from './routers/reports';
 import SERVER from './config/server';
+import getAllSubscriptions from './functions/subscriptions/getAllSubscriptions';
+import { auth } from './config/firebase';
 
 const app = express();
 const port = SERVER.port;
@@ -22,6 +24,11 @@ app.get('*', (req, res) => {
     }
   });
 });
+
+(async () => {
+  await auth();
+  getAllSubscriptions();
+})();
 
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);

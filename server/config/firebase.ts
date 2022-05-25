@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore/lite';
 
 dotenv.config();
@@ -12,6 +13,9 @@ const FIREBASE_MESSAGING_SENDER_ID =
   process.env.FIREBASE_MESSAGING_SENDER_ID || '';
 const FIREBASE_APP_ID = process.env.FIREBASE_APP_ID || '';
 
+const FIREBASE_USER_EMAIL = process.env.FIREBASE_USER_EMAIL || '';
+const FIREBASE_USER_PASSWROD = process.env.FIREBASE_USER_PASSWROD || '';
+
 export const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
   authDomain: FIREBASE_AUTH_DOMAIN,
@@ -22,5 +26,15 @@ export const firebaseConfig = {
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
+
+export const firebaseAuth = getAuth(firebaseApp);
+
+export const auth = async () => {
+  await signInWithEmailAndPassword(
+    firebaseAuth,
+    FIREBASE_USER_EMAIL,
+    FIREBASE_USER_PASSWROD,
+  ).catch((err) => console.log(err));
+};
 
 export const firestore = getFirestore(firebaseApp);
