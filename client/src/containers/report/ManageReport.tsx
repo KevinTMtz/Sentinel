@@ -19,9 +19,7 @@ const ManageReport = () => {
 
   firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
-  const reportId = location.pathname.substring(
-    location.pathname.lastIndexOf('/') + 1,
-  );
+  const reportId = (location.state as { reportId: string }).reportId;
 
   useEffect(() => {
     if (currentUser?.uid)

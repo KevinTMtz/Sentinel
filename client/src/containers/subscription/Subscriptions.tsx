@@ -52,7 +52,12 @@ const Subscriptions = () => {
           <SubscriptionRow
             key={`report-${index}`}
             subscription={subscription}
-            onClick={() => subscription.id && navigate(subscription.id)}
+            onClick={() =>
+              subscription.id &&
+              navigate(subscription.id, {
+                state: { subscriptionId: subscription.id },
+              })
+            }
           />
         ))
       )}

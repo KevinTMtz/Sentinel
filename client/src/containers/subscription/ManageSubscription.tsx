@@ -30,9 +30,8 @@ const ManageSubscription = () => {
 
   firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
-  const subscriptionId = location.pathname.substring(
-    location.pathname.lastIndexOf('/') + 1,
-  );
+  const subscriptionId = (location.state as { subscriptionId: string })
+    .subscriptionId;
 
   useEffect(() => {
     if (currentUser?.uid) {
@@ -153,7 +152,11 @@ const ManageSubscription = () => {
             key={`report-${index}`}
             report={report.query}
             createdAt={report.query.created_at}
-            onClick={() => navigate(report.id)}
+            onClick={() =>
+              navigate(report.id, {
+                state: { subscriptionId: subscriptionId, reportId: report.id },
+              })
+            }
           />
         ))
       )}

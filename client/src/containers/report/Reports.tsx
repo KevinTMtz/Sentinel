@@ -52,7 +52,9 @@ const Reports = () => {
             key={`report-${index}`}
             report={report.query}
             createdAt={report.query.created_at}
-            onClick={() => navigate(report.id)}
+            onClick={() =>
+              navigate(report.id, { state: { reportId: report.id } })
+            }
           />
         ))
       )}

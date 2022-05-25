@@ -19,9 +19,13 @@ const ManageSubscriptionReport = () => {
 
   firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
-  const pathSegments = location.pathname.split('/');
-  const reportId = pathSegments.pop();
-  const subscriptionId = pathSegments.pop();
+  const locationState = location.state as {
+    subscriptionId: string;
+    reportId: string;
+  };
+
+  const subscriptionId = locationState.subscriptionId;
+  const reportId = locationState.reportId;
 
   useEffect(() => {
     if (currentUser?.uid && subscriptionId && reportId)
