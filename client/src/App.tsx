@@ -28,6 +28,9 @@ import UserAccount from './containers/account/UserAccount';
 import Search from './containers/search/Search';
 import Reports from './containers/report/Reports';
 import ManageReport from './containers/report/ManageReport';
+import Subscriptions from './containers/subscription/Subscriptions';
+import ManageSubscription from './containers/subscription/ManageSubscription';
+import ManageSubscriptionReport from './containers/subscription/ManageSubscriptionReport';
 
 const App = () => {
   const navigate = useNavigate();
@@ -73,6 +76,12 @@ const App = () => {
                 onClick={() => navigate('/search-reports')}
               >
                 Reports
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => navigate('/subscriptions')}
+              >
+                Subscriptions
               </Button>
             </>
           )}
@@ -178,13 +187,43 @@ const App = () => {
                 }
               />
               <Route
-                path=':id'
+                path=':reportId'
                 element={
                   <RequireAuth>
                     <ManageReport />
                   </RequireAuth>
                 }
               />
+            </Route>
+
+            <Route path='subscriptions'>
+              <Route
+                path=''
+                element={
+                  <RequireAuth>
+                    <Subscriptions />
+                  </RequireAuth>
+                }
+              />
+
+              <Route path=':subscriptionId'>
+                <Route
+                  path=''
+                  element={
+                    <RequireAuth>
+                      <ManageSubscription />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path=':reportId'
+                  element={
+                    <RequireAuth>
+                      <ManageSubscriptionReport />
+                    </RequireAuth>
+                  }
+                />
+              </Route>
             </Route>
 
             <Route path='*' element={<Navigate to='/' replace />} />

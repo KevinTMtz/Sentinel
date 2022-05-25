@@ -2,18 +2,44 @@ import { useState } from 'react';
 import { User } from 'firebase/auth';
 import { Box, Button } from '@mui/material';
 
-import SearchBar from '../../components/SearchBar';
-import Report from '../../components/report/Report';
 import { firebaseAuth } from '../../config/firebase';
 import { createReport, deleteReport } from '../../functions/firestore/reports';
-import { styles } from '../../styles/styles';
+import { ReportSearchQuery, SubscriptionConfig } from '../../types/types';
+import SearchBar from '../../components/search/SearchBar';
+import Report from '../../components/report/Report';
 import Spinner from '../../components/utils/Spinner';
+import { styles } from '../../styles/styles';
+import SubscribeBar from '../../components/search/SubscribeBar';
+import {
+  createSubscription,
+  deleteSubscription,
+} from '../../functions/firestore/subscription';
+import { searchAndGetReport } from '../../functions/search/search';
+
+const emptyQuery: ReportSearchQuery = {
+  topic: '',
+  location: 'all',
+  until: new Date(),
+};
+
+const emptySubConfig: SubscriptionConfig = {
+  periodicy: 'weekly',
+  startDate: new Date().toISOString(),
+  isActive: true,
+};
 
 const Search = () => {
   const [currentUser, setCurrentUser] = useState<User | null>();
 
-  const [report, setReport] = useState<any>();
+  const [query, setQuery] = useState<ReportSearchQuery>(emptyQuery);
+
+  const [subConfig, setSubConfig] =
+    useState<SubscriptionConfig>(emptySubConfig);
+
+  const [report, setReport] = useState<any>(null);
   const [reportId, setReportId] = useState<string>('');
+
+  const [subscriptionId, setSubscriptionId] = useState<string>('');
 
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -26,7 +52,7 @@ const Search = () => {
           console.log('Uploaded report');
           setReportId(res.id);
         },
-        (error) => console.log(`Error: ${error.message}`),
+        (err) => console.log(`Error: ${err.message}`),
       );
   };
 
@@ -37,37 +63,108 @@ const Search = () => {
           console.log('Deleted report');
           setReportId('');
         },
-        (error) => console.log(`Error: ${error.message}`),
+        (err) => console.log(`Error: ${err.message}`),
       );
+  };
+
+  const search = async () => {
+    setLoading(true);
+
+    searchAndGetReport(query).then(
+      (res: any) => {
+        setReport(res.data.report);
+        setLoading(false);
+      },
+      (err: any) => {
+        console.log(err);
+      },
+    );
+  };
+
+  const subscribeSearch = async () => {
+    if (currentUser?.uid)
+      await createSubscription(currentUser?.uid, {
+        query: query,
+        config: subConfig,
+      }).then(
+        (res) => {
+          setSubscriptionId(res.id);
+        },
+        (err) => {
+          console.log(err);
+        },
+      );
+  };
+
+  const unSubscribeSearch = async () => {
+    if (currentUser?.uid)
+      await deleteSubscription(currentUser?.uid, subscriptionId).then(
+        (res) => {
+          setSubscriptionId('');
+        },
+        (err) => {
+          console.log(err);
+        },
+      );
+  };
+
+  const clearState = () => {
+    setQuery(emptyQuery);
+    setSubConfig(emptySubConfig);
+    setReport(null);
+    setReportId('');
+    setSubscriptionId('');
   };
 
   return (
     <div>
-      <SearchBar setReport={setReport} setLoading={setLoading} />
-      {isLoading ? (
-        <Spinner />
+      {report ? (
+        <>
+          <Box sx={{ margin: '16px 0px', ...styles.displayRowsButtons }}>
+            {subscriptionId ? (
+              <Button
+                variant='contained'
+                color='warning'
+                fullWidth
+                onClick={unSubscribeSearch}
+              >
+                Unsubscribe
+              </Button>
+            ) : (
+              <SubscribeBar
+                subscribe={subscribeSearch}
+                subConfig={subConfig}
+                setSubConfig={setSubConfig}
+                buttonColor='success'
+                buttonText='Subscribe'
+              />
+            )}
+
+            {reportId !== '' ? (
+              <Button
+                variant='contained'
+                color='error'
+                fullWidth
+                onClick={unsaveReport}
+              >
+                Delete Report
+              </Button>
+            ) : (
+              <Button variant='contained' fullWidth onClick={saveReport}>
+                Save Report
+              </Button>
+            )}
+            <Button variant='outlined' fullWidth onClick={clearState}>
+              Make another search
+            </Button>
+          </Box>
+          <Report report={report} />
+        </>
       ) : (
-        report && (
-          <>
-            <Box sx={{ margin: '16px 0px', ...styles.displayRowsButtons }}>
-              {reportId !== '' ? (
-                <Button
-                  variant='contained'
-                  color='error'
-                  fullWidth
-                  onClick={unsaveReport}
-                >
-                  Delete Report
-                </Button>
-              ) : (
-                <Button variant='contained' fullWidth onClick={saveReport}>
-                  Save Report
-                </Button>
-              )}
-            </Box>
-            <Report report={report} />
-          </>
-        )
+        <>
+          <SearchBar query={query} setQuery={setQuery} search={search} />
+          {isLoading && <Spinner />}
+        </>
       )}
     </div>
   );

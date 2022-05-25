@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-import { ReportSearchProps } from '../../types/types';
+import { ReportSearchQuery } from '../../types/types';
 import {
   getDateAndTime,
   upperCaseFirstLetter,
@@ -18,7 +18,7 @@ const cardStyle = {
 };
 
 interface ReportRowProps {
-  report: ReportSearchProps;
+  report: ReportSearchQuery;
   createdAt: string;
   onClick: () => void;
 }
