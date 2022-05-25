@@ -3,7 +3,7 @@ import express from 'express';
 import path from 'path';
 
 import reportsRouter from './routers/reports';
-import { SERVER } from './config/config';
+import SERVER from './config/server';
 
 const app = express();
 const port = SERVER.port;

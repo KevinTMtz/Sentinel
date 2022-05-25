@@ -4,7 +4,7 @@ import Twitter from 'twitter';
 import TwitterV2 from 'twitter-v2';
 import Sentiment from 'sentiment';
 
-import { TWITTER } from '../config/config';
+import TWITTER from '../config/twitter';
 import { getReport } from '../functions/getReport';
 import { statesGeocodes } from '../values/states';
 
