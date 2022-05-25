@@ -24,6 +24,8 @@ interface SubscribeBarProps {
   subscribe: () => void;
   subConfig: SubscriptionConfig;
   setSubConfig: Dispatch<SubscriptionConfig>;
+  buttonColor?: any;
+  buttonText: string;
 }
 
 const SubscribeBar = (props: SubscribeBarProps) => (
@@ -33,10 +35,13 @@ const SubscribeBar = (props: SubscribeBarProps) => (
         <DateTimePicker
           label='Start date'
           disableFuture
-          value={props.subConfig.startDate}
+          value={new Date(props.subConfig.startDate)}
           onChange={(value) =>
             value &&
-            props.setSubConfig({ ...props.subConfig, startDate: value })
+            props.setSubConfig({
+              ...props.subConfig,
+              startDate: value.toISOString(),
+            })
           }
           renderInput={(params) => <TextField {...params} />}
         />
@@ -59,10 +64,10 @@ const SubscribeBar = (props: SubscribeBarProps) => (
       sx={{ height: '56px' }}
       fullWidth
       variant='contained'
-      color='secondary'
+      color={props.buttonColor}
       onClick={props.subscribe}
     >
-      Subscribe
+      {props.buttonText}
     </Button>
   </Box>
 );

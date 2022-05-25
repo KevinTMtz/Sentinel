@@ -24,7 +24,7 @@ const emptyQuery: ReportSearchQuery = {
 
 const emptySubConfig: SubscriptionConfig = {
   periodicy: 'weekly',
-  startDate: new Date(),
+  startDate: new Date().toISOString(),
   isActive: true,
 };
 
@@ -69,6 +69,7 @@ const Search = () => {
 
   const search = async () => {
     setLoading(true);
+
     searchAndGetReport(query).then(
       (res: any) => {
         setReport(res.data.report);
@@ -123,7 +124,7 @@ const Search = () => {
             {subscriptionId ? (
               <Button
                 variant='contained'
-                color='secondary'
+                color='warning'
                 fullWidth
                 onClick={unSubscribeSearch}
               >
@@ -134,6 +135,8 @@ const Search = () => {
                 subscribe={subscribeSearch}
                 subConfig={subConfig}
                 setSubConfig={setSubConfig}
+                buttonColor='success'
+                buttonText='Subscribe'
               />
             )}
 
@@ -152,7 +155,7 @@ const Search = () => {
               </Button>
             )}
             <Button variant='outlined' fullWidth onClick={clearState}>
-              Search again
+              Make another search
             </Button>
           </Box>
           <Report report={report} />

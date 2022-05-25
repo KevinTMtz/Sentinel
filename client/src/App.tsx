@@ -30,6 +30,7 @@ import Reports from './containers/report/Reports';
 import ManageReport from './containers/report/ManageReport';
 import Subscriptions from './containers/subscription/Subscriptions';
 import ManageSubscription from './containers/subscription/ManageSubscription';
+import ManageSubscriptionReport from './containers/subscription/ManageSubscriptionReport';
 
 const App = () => {
   const navigate = useNavigate();
@@ -186,7 +187,7 @@ const App = () => {
                 }
               />
               <Route
-                path=':id'
+                path=':reportId'
                 element={
                   <RequireAuth>
                     <ManageReport />
@@ -204,14 +205,25 @@ const App = () => {
                   </RequireAuth>
                 }
               />
-              <Route
-                path=':id'
-                element={
-                  <RequireAuth>
-                    <ManageSubscription />
-                  </RequireAuth>
-                }
-              />
+
+              <Route path=':subscriptionId'>
+                <Route
+                  path=''
+                  element={
+                    <RequireAuth>
+                      <ManageSubscription />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path=':reportId'
+                  element={
+                    <RequireAuth>
+                      <ManageSubscriptionReport />
+                    </RequireAuth>
+                  }
+                />
+              </Route>
             </Route>
 
             <Route path='*' element={<Navigate to='/' replace />} />

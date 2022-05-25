@@ -7,14 +7,24 @@ import ReportRow from '../../components/report/ReportRow';
 import { firebaseAuth } from '../../config/firebase';
 import { DocumentData } from 'firebase/firestore/lite';
 import { styles } from '../../styles/styles';
-import { getSubscriptionReports } from '../../functions/firestore/subscription';
+import {
+  deleteSubscription,
+  getSubscription,
+  getSubscriptionReports,
+  updateSubscription,
+} from '../../functions/firestore/subscription';
 import Title from '../../components/ui/Title';
+import SubscribeBar from '../../components/search/SubscribeBar';
+import { Subscription, SubscriptionConfig } from '../../types/types';
 
 const ManageSubscription = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [currentUser, setCurrentUser] = useState<User | null>();
+
+  const [subscription, setSubscription] = useState<Subscription>();
+  const [subConfig, setSubConfig] = useState<SubscriptionConfig>();
 
   const [reports, setReports] = useState<any[]>([]);
 
@@ -25,7 +35,17 @@ const ManageSubscription = () => {
   );
 
   useEffect(() => {
-    if (currentUser?.uid)
+    if (currentUser?.uid) {
+      getSubscription(currentUser?.uid, subscriptionId).then(
+        (doc) => {
+          const docData = doc.data();
+
+          setSubscription(docData);
+          setSubConfig(docData.config);
+        },
+        (err) => console.log(err.message),
+      );
+
       getSubscriptionReports(currentUser?.uid, subscriptionId).then(
         (querySnapshot) => {
           const tempReports: any[] = [];
@@ -42,17 +62,83 @@ const ManageSubscription = () => {
         },
         (err) => console.log(err.message),
       );
+    }
   }, [currentUser?.uid, subscriptionId]);
+
+  const updateSubscriptionConfigState = async () => {
+    const newConfig = {
+      ...subConfig,
+      isActive: !subConfig?.isActive,
+    } as SubscriptionConfig;
+
+    setSubConfig(newConfig);
+
+    await updateSubscriptionConfig(newConfig);
+  };
+
+  const updateSubscriptionConfig = async (config?: SubscriptionConfig) => {
+    if (currentUser?.uid && subConfig && subscription?.query)
+      updateSubscription(currentUser?.uid, subscriptionId, {
+        ...subscription,
+        config: config ?? subConfig,
+      }).then(
+        (res) => console.log('Updated subscription'),
+        (err) => console.log(err.message),
+      );
+  };
+
+  const deleteSubscriptionAndReports = async () => {
+    if (currentUser?.uid)
+      deleteSubscription(currentUser?.uid, subscriptionId).then(
+        (res) => {},
+        (err) => console.log(err.message),
+      );
+  };
 
   return (
     <Box sx={{ ...styles.displayRowsButtons, marginTop: '16px' }}>
-      <Title>Subscription</Title>
+      <Title>Subscription - {subscription?.query.topic}</Title>
+      {subConfig && (
+        <SubscribeBar
+          subscribe={updateSubscriptionConfig}
+          subConfig={subConfig}
+          setSubConfig={setSubConfig}
+          buttonText='Update'
+        />
+      )}
       <Box sx={{ marginBottom: '16px', ...styles.displayRowsButtons }}>
+        {subConfig?.isActive ? (
+          <Button
+            variant='contained'
+            color='warning'
+            fullWidth
+            onClick={updateSubscriptionConfigState}
+          >
+            Deactivate subscription
+          </Button>
+        ) : (
+          <Button
+            variant='contained'
+            color='success'
+            fullWidth
+            onClick={updateSubscriptionConfigState}
+          >
+            Activate subscription
+          </Button>
+        )}
+        <Button
+          variant='contained'
+          color='error'
+          fullWidth
+          onClick={deleteSubscriptionAndReports}
+        >
+          Delete subscription and its reports
+        </Button>
         <Button
           variant='outlined'
           color='primary'
           fullWidth
-          onClick={() => navigate('/subscriptions')}
+          onClick={() => navigate(-1)}
         >
           Go back
         </Button>

@@ -6,10 +6,10 @@ import { Button } from '@mui/material';
 
 import Report from '../../components/report/Report';
 import { firebaseAuth } from '../../config/firebase';
-import { deleteReport, getReport } from '../../functions/firestore/reports';
 import { styles } from '../../styles/styles';
+import { getSubscriptionReport } from '../../functions/firestore/subscription';
 
-const ManageReport = () => {
+const ManageSubscriptionReport = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,46 +19,27 @@ const ManageReport = () => {
 
   firebaseAuth.onAuthStateChanged((user) => setCurrentUser(user));
 
-  const reportId = location.pathname.substring(
-    location.pathname.lastIndexOf('/') + 1,
-  );
+  const pathSegments = location.pathname.split('/');
+  const reportId = pathSegments.pop();
+  const subscriptionId = pathSegments.pop();
 
   useEffect(() => {
-    if (currentUser?.uid)
-      getReport(currentUser?.uid, reportId).then(
+    if (currentUser?.uid && subscriptionId && reportId)
+      getSubscriptionReport(currentUser?.uid, subscriptionId, reportId).then(
         (doc) => {
           setReport(doc.data());
         },
         (error) => console.log(error.message),
       );
-  }, [currentUser?.uid, reportId]);
+  }, [currentUser?.uid, subscriptionId, reportId]);
 
   const navigateBack = () => {
     navigate(-1);
   };
 
-  const unsaveReport = async () => {
-    if (currentUser?.uid)
-      await deleteReport(currentUser?.uid, reportId).then(
-        (res) => {
-          console.log('Deleted report');
-          navigateBack();
-        },
-        (error) => console.log(`Error: ${error.message}`),
-      );
-  };
-
   return (
     <Box>
       <Box sx={{ marginBottom: '16px', ...styles.displayRowsButtons }}>
-        <Button
-          variant='contained'
-          color='error'
-          fullWidth
-          onClick={unsaveReport}
-        >
-          Delete report
-        </Button>
         <Button
           variant='outlined'
           color='primary'
@@ -73,4 +54,4 @@ const ManageReport = () => {
   );
 };
 
-export default ManageReport;
+export default ManageSubscriptionReport;
