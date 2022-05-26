@@ -12,7 +12,7 @@ export type Periodicy = 'daily' | 'weekly' | 'monthly';
 
 export interface SubscriptionConfig {
   periodicy: Periodicy;
-  startDate: string;
+  startDate: Date;
   isActive: Boolean;
 }
 

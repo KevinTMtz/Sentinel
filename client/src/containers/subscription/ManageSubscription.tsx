@@ -40,7 +40,10 @@ const ManageSubscription = () => {
           const docData = doc.data();
 
           setSubscription(docData);
-          setSubConfig(docData.config);
+          setSubConfig({
+            ...docData.config,
+            startDate: docData.config.startDate.toDate(),
+          });
         },
         (err) => console.log(err.message),
       );
