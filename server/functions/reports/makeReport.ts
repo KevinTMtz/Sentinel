@@ -104,7 +104,7 @@ const getGeneralSentimentMap = async (tweetsByState: any[]) => {
   };
 };
 
-export const getReport = async (
+const makeReport = async (
   allTweets: any[],
   tweetsByState: any[],
   tweetCount: any[],
@@ -144,3 +144,5 @@ export const getReport = async (
     tweets: allTweets.slice(0, Math.min(allTweets.length, 10)),
   };
 };
+
+export default makeReport;
