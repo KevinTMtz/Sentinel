@@ -18,7 +18,7 @@ const saveSubscriptionReport = async (
   );
 };
 
-const addSubscriptionReport = async (subscription: any) => {
+const makeSubscriptionReport = async (subscription: any) => {
   const { topic, location } = subscription.query;
   const until = new Date();
 
@@ -42,4 +42,4 @@ const addSubscriptionReport = async (subscription: any) => {
   saveSubscriptionReport(subscription.user, subscription.id, report);
 };
 
-export default addSubscriptionReport;
+export default makeSubscriptionReport;

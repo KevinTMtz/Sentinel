@@ -2,10 +2,9 @@ import cors from 'cors';
 import express from 'express';
 import path from 'path';
 
-import reportsRouter from './routers/reports';
 import SERVER from './config/server';
-import getAllSubscriptions from './functions/subscriptions/getAllSubscriptions';
-import { auth } from './config/firebase';
+import reportsRouter from './routers/reports';
+import setSubscriptionTimer from './functions/subscriptions/setSubscriptionTimer';
 
 const app = express();
 const port = SERVER.port;
@@ -25,16 +24,8 @@ app.get('*', (req, res) => {
   });
 });
 
-console.log(SERVER.env);
-console.log(SERVER.env.trim() === 'production');
-
-if (SERVER.env.trim() === 'production') {
-  (async () => {
-    await auth();
-    getAllSubscriptions();
-  })();
-}
-
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
 });
+
+setSubscriptionTimer();
