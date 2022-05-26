@@ -14,7 +14,7 @@ const FIREBASE_MESSAGING_SENDER_ID =
 const FIREBASE_APP_ID = process.env.FIREBASE_APP_ID || '';
 
 const FIREBASE_USER_EMAIL = process.env.FIREBASE_USER_EMAIL || '';
-const FIREBASE_USER_PASSWROD = process.env.FIREBASE_USER_PASSWROD || '';
+const FIREBASE_USER_PASSWORD = process.env.FIREBASE_USER_PASSWORD || '';
 
 export const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
@@ -33,7 +33,7 @@ export const auth = async () => {
   await signInWithEmailAndPassword(
     firebaseAuth,
     FIREBASE_USER_EMAIL,
-    FIREBASE_USER_PASSWROD,
+    FIREBASE_USER_PASSWORD,
   ).catch((err) => console.log(err));
 };
 

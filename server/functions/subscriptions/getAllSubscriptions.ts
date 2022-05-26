@@ -59,6 +59,8 @@ const getAllSubscriptions = async () => {
       pendingSubs.forEach((subscription) => {
         addSubscriptionReport(subscription);
       });
+
+      console.log('Generated all pending subscription reports...');
     },
     (error) => console.log(error.message),
   );

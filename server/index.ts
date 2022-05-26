@@ -25,10 +25,15 @@ app.get('*', (req, res) => {
   });
 });
 
-(async () => {
-  await auth();
-  getAllSubscriptions();
-})();
+console.log(SERVER.env);
+console.log(SERVER.env.trim() === 'production');
+
+if (SERVER.env.trim() === 'production') {
+  (async () => {
+    await auth();
+    getAllSubscriptions();
+  })();
+}
 
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
