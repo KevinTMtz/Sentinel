@@ -6,6 +6,7 @@ import {
 } from 'firebase/firestore/lite';
 
 import { firestore } from '../../config/firebase';
+import addSubscriptionReport from './addSubscriptionReport';
 
 const isPending = (
   periodicy: 'weekly' | 'monthly' | 'daily',
@@ -54,6 +55,10 @@ const getAllSubscriptions = async () => {
             subscription.config.startDate.toDate(),
           ),
         );
+
+      pendingSubs.forEach((subscription) => {
+        addSubscriptionReport(subscription);
+      });
     },
     (error) => console.log(error.message),
   );
