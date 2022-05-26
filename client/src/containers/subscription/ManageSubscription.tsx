@@ -92,9 +92,13 @@ const ManageSubscription = () => {
   const deleteSubscriptionAndReports = async () => {
     if (currentUser?.uid)
       deleteSubscription(currentUser?.uid, subscriptionId).then(
-        (res) => {},
+        (res) => navigateBack(),
         (err) => console.log(err.message),
       );
+  };
+
+  const navigateBack = () => {
+    navigate(-1);
   };
 
   return (
@@ -140,7 +144,7 @@ const ManageSubscription = () => {
           variant='outlined'
           color='primary'
           fullWidth
-          onClick={() => navigate(-1)}
+          onClick={() => navigateBack()}
         >
           Go back
         </Button>
