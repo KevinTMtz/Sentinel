@@ -1,55 +1,61 @@
 import {
-  addDoc,
-  collection,
   collectionGroup,
-  deleteDoc,
-  doc,
-  DocumentData,
-  DocumentReference,
-  getDoc,
   getDocs,
   query,
-  QueryDocumentSnapshot,
-  updateDoc,
   where,
 } from 'firebase/firestore/lite';
 
 import { firestore } from '../../config/firebase';
 
+const isPending = (
+  periodicy: 'weekly' | 'monthly' | 'daily',
+  startDate: Date,
+): Boolean => {
+  if (periodicy == 'daily') return true;
+
+  const today = new Date();
+
+  return periodicy == 'weekly'
+    ? startDate.getDay() == today.getDay()
+    : startDate.getDate() == today.getDate();
+};
+
 const getAllSubscriptions = async () => {
-  // TODO: Get user id
-  const subs = query(collectionGroup(firestore, 'subscriptions'));
-  await getDocs(subs).then(
-    (querySnapshot) => {
-      const tempReports: any[] = [];
+  const conditions = [
+    where('config.isActive', '==', true),
+    where(
+      'config.startDate',
+      '<=',
+      new Date(new Date().setHours(23, 59, 59, 999)),
+    ),
+  ];
 
-      querySnapshot.forEach((subscription: QueryDocumentSnapshot) => {
-        tempReports.push({
-          id: subscription.id,
-          user: subscription.ref.parent.parent?.id,
-          ...subscription.data(),
-        });
-      });
-      console.log(tempReports);
+  const validSubsQuery = query(
+    collectionGroup(firestore, 'subscriptions'),
+    ...conditions,
+  );
+
+  await getDocs(validSubsQuery).then(
+    (querySnapshot) => {
+      const pendingSubs = querySnapshot.docs
+
+        .map((subscription) => {
+          return {
+            id: subscription.id,
+            user: subscription.ref.parent.parent!!.id,
+            config: subscription.get('config'),
+            query: subscription.get('query'),
+          };
+        })
+
+        .filter((subscription) =>
+          isPending(
+            subscription.config.periodicy,
+            subscription.config.startDate.toDate(),
+          ),
+        );
     },
     (error) => console.log(error.message),
   );
-  /*
-  const subsRef = collection(
-    firestore,
-    `reportSubscriptions/eS7nZDCOlMSJPjQIT3wbcwytiYP2/subscriptions`,
-  );
-  const q = query(subsRef, where('config.periodicy', '==', 'weekly'));
-  await getDocs(q).then(
-    (querySnapshot) => {
-      const tempReports: any[] = [];
-
-      querySnapshot.forEach((subscription: DocumentData) => {
-        tempReports.push({ id: subscription.id, ...subscription.data() });
-      });
-      console.log(tempReports.length);
-    },
-    (error) => console.log(error.message),
-  );*/
 };
 export default getAllSubscriptions;
