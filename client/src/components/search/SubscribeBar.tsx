@@ -40,7 +40,7 @@ const SubscribeBar = (props: SubscribeBarProps) => (
             value &&
             props.setSubConfig({
               ...props.subConfig,
-              startDate: value.toISOString(),
+              startDate: value,
             })
           }
           renderInput={(params) => <TextField {...params} />}

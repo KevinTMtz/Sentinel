@@ -24,7 +24,7 @@ const emptyQuery: ReportSearchQuery = {
 
 const emptySubConfig: SubscriptionConfig = {
   periodicy: 'weekly',
-  startDate: new Date().toISOString(),
+  startDate: new Date(),
   isActive: true,
 };
 

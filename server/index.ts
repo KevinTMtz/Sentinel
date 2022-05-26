@@ -2,8 +2,9 @@ import cors from 'cors';
 import express from 'express';
 import path from 'path';
 
+import SERVER from './config/server';
 import reportsRouter from './routers/reports';
-import { SERVER } from './config/config';
+import setSubscriptionTimer from './functions/subscriptions/setSubscriptionTimer';
 
 const app = express();
 const port = SERVER.port;
@@ -26,3 +27,5 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
 });
+
+setSubscriptionTimer();
