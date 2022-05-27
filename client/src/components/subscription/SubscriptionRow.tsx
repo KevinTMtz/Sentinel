@@ -31,7 +31,7 @@ const SubscriptionRow = (props: SubscriptionRowProps) => (
         </strong>
       </Typography>
       <Typography variant='h6'>
-        Periodicy: {props.subscription.config.periodicy}
+        Periodicy: {upperCaseFirstLetter(props.subscription.config.periodicy)}
       </Typography>
     </Box>
     <Box>

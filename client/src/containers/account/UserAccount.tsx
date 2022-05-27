@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteUser, updateEmail, updateProfile, User } from 'firebase/auth';
+import {
+  deleteUser,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateEmail,
+  updateProfile,
+  User,
+} from 'firebase/auth';
 
 import AccountForm from '../../components/account/AccountForm';
 import SnackBar from '../../components/utils/Snackbar';
 import Spinner from '../../components/utils/Spinner';
 import { firebaseAuth } from '../../config/firebase';
+import { deleteSubscriptionsAndReports } from '../../functions/firestore/subscription';
+import { deleteReports } from '../../functions/firestore/reports';
 
 const UserAccount = () => {
   const navigate = useNavigate();
@@ -40,9 +49,7 @@ const UserAccount = () => {
     GetInfo();
   }, []);
 
-  const openSnackBar = () => {
-    setOpen(true);
-  };
+  const openSnackBar = () => setOpen(true);
 
   const showError = (error: string) => {
     setWarning(error);
@@ -79,34 +86,59 @@ const UserAccount = () => {
     setIsLoading(true);
 
     if (currentUser)
-      updateEmail(currentUser, email)
-        .then(() => {
-          updateProfile(currentUser, {
-            displayName: name,
-          })
-            .then(() => {
-              navigate('/search');
-            })
-            .catch((error) => {
-              showError(error.message);
-            });
-        })
-        .catch((error) => {
-          showError(error.message);
-        });
+      await reauthenticateWithCredential(
+        currentUser,
+        EmailAuthProvider.credential(currentUser.email!, password),
+      ).then(
+        async () =>
+          await updateEmail(currentUser, email).then(
+            async () =>
+              await updateProfile(currentUser, {
+                displayName: name,
+              })
+                .then(() => navigate('/search'))
+                .catch((error) => showError(error.message)),
+            (error) => showError(error.message),
+          ),
+        (error) => showError(error.message),
+      );
   };
 
   const DeleteUser = async () => {
+    if (password === '') {
+      setWarning('Please enter your password');
+      openSnackBar();
+      return;
+    }
+
+    if (password !== confirmation) {
+      setWarning('The passwords do not match');
+      openSnackBar();
+      return;
+    }
+
     setIsLoading(true);
 
-    if (currentUser)
-      deleteUser(currentUser)
-        .then(() => {
-          navigate('/');
-        })
-        .catch((error) => {
-          showError(error.message);
-        });
+    if (currentUser && currentUser?.uid)
+      await reauthenticateWithCredential(
+        currentUser,
+        EmailAuthProvider.credential(currentUser.email!, password),
+      ).then(
+        async () =>
+          await deleteSubscriptionsAndReports(currentUser.uid).then(
+            async () =>
+              await deleteReports(currentUser.uid).then(
+                async () =>
+                  await deleteUser(currentUser).then(
+                    () => navigate('/'),
+                    (error) => showError(error.message),
+                  ),
+                (error) => showError(error.message),
+              ),
+            (error) => showError(error.message),
+          ),
+        (error) => showError(error.message),
+      );
   };
 
   return (

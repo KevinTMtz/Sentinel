@@ -8,14 +8,19 @@ import { firebaseAuth } from '../../config/firebase';
 import { DocumentData } from 'firebase/firestore/lite';
 import { styles } from '../../styles/styles';
 import {
-  deleteSubscription,
+  deleteSubscriptionAndReports,
   getSubscription,
   getSubscriptionReports,
   updateSubscription,
 } from '../../functions/firestore/subscription';
 import Title from '../../components/ui/Title';
 import SubscribeBar from '../../components/search/SubscribeBar';
-import { Subscription, SubscriptionConfig } from '../../types/types';
+import {
+  ReportSearchQuery,
+  Subscription,
+  SubscriptionConfig,
+} from '../../types/types';
+import { upperCaseFirstLetter } from '../../functions/utils/utils';
 
 const ManageSubscription = () => {
   const navigate = useNavigate();
@@ -23,8 +28,9 @@ const ManageSubscription = () => {
 
   const [currentUser, setCurrentUser] = useState<User | null>();
 
-  const [subscription, setSubscription] = useState<Subscription>();
+  const [query, setQuery] = useState<ReportSearchQuery>();
   const [subConfig, setSubConfig] = useState<SubscriptionConfig>();
+  const [stateSubConfig, setStateSubConfig] = useState<SubscriptionConfig>();
 
   const [reports, setReports] = useState<any[]>([]);
 
@@ -35,20 +41,24 @@ const ManageSubscription = () => {
 
   useEffect(() => {
     if (currentUser?.uid) {
-      getSubscription(currentUser?.uid, subscriptionId).then(
+      getSubscription(currentUser.uid, subscriptionId).then(
         (doc) => {
           const docData = doc.data();
 
-          setSubscription(docData);
-          setSubConfig({
+          setQuery(docData.query);
+
+          const newSubConfig = {
             ...docData.config,
             startDate: docData.config.startDate.toDate(),
-          });
+          };
+
+          setSubConfig(newSubConfig);
+          setStateSubConfig(newSubConfig);
         },
         (err) => console.log(err.message),
       );
 
-      getSubscriptionReports(currentUser?.uid, subscriptionId).then(
+      getSubscriptionReports(currentUser.uid, subscriptionId).then(
         (querySnapshot) => {
           const tempReports: any[] = [];
 
@@ -68,42 +78,55 @@ const ManageSubscription = () => {
   }, [currentUser?.uid, subscriptionId]);
 
   const updateSubscriptionConfigState = async () => {
-    const newConfig = {
-      ...subConfig,
-      isActive: !subConfig?.isActive,
+    const newSubConfig = {
+      ...stateSubConfig,
+      isActive: !stateSubConfig?.isActive,
     } as SubscriptionConfig;
 
-    setSubConfig(newConfig);
+    setStateSubConfig(newSubConfig);
 
-    await updateSubscriptionConfig(newConfig);
+    await updateSubscriptionConfig(newSubConfig);
   };
 
   const updateSubscriptionConfig = async (config?: SubscriptionConfig) => {
-    if (currentUser?.uid && subConfig && subscription?.query)
-      updateSubscription(currentUser?.uid, subscriptionId, {
-        ...subscription,
-        config: config ?? subConfig,
-      }).then(
-        (res) => console.log('Updated subscription'),
-        (err) => console.log(err.message),
-      );
-  };
+    const newSubscription = {
+      query: query,
+      config: config ?? subConfig,
+    } as Subscription;
 
-  const deleteSubscriptionAndReports = async () => {
     if (currentUser?.uid)
-      deleteSubscription(currentUser?.uid, subscriptionId).then(
-        (res) => navigateBack(),
+      await updateSubscription(
+        currentUser.uid,
+        subscriptionId,
+        newSubscription,
+      ).then(
+        (_) => {
+          if (config)
+            setSubConfig({
+              ...subConfig,
+              isActive: config.isActive,
+            } as SubscriptionConfig);
+          else setStateSubConfig(newSubscription.config);
+
+          console.log('Updated subscription');
+        },
         (err) => console.log(err.message),
       );
   };
 
-  const navigateBack = () => {
-    navigate(-1);
+  const deleteSubscription = async () => {
+    if (currentUser?.uid)
+      await deleteSubscriptionAndReports(currentUser.uid, subscriptionId).then(
+        async (_) => navigateBack(),
+        (err) => console.log(err.message),
+      );
   };
+
+  const navigateBack = () => navigate(-1);
 
   return (
     <Box sx={{ ...styles.displayRowsButtons, marginTop: '16px' }}>
-      <Title>Subscription - {subscription?.query.topic}</Title>
+      <Title>Subscription - {upperCaseFirstLetter(query?.topic ?? '')}</Title>
       {subConfig && (
         <SubscribeBar
           subscribe={updateSubscriptionConfig}
@@ -113,7 +136,7 @@ const ManageSubscription = () => {
         />
       )}
       <Box sx={{ marginBottom: '16px', ...styles.displayRowsButtons }}>
-        {subConfig?.isActive ? (
+        {stateSubConfig?.isActive ? (
           <Button
             variant='contained'
             color='warning'
@@ -136,7 +159,7 @@ const ManageSubscription = () => {
           variant='contained'
           color='error'
           fullWidth
-          onClick={deleteSubscriptionAndReports}
+          onClick={deleteSubscription}
         >
           Delete subscription and its reports
         </Button>

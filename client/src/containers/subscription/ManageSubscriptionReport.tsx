@@ -29,7 +29,7 @@ const ManageSubscriptionReport = () => {
 
   useEffect(() => {
     if (currentUser?.uid && subscriptionId && reportId)
-      getSubscriptionReport(currentUser?.uid, subscriptionId, reportId).then(
+      getSubscriptionReport(currentUser.uid, subscriptionId, reportId).then(
         (doc) => {
           setReport(doc.data());
         },

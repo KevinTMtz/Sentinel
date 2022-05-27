@@ -22,7 +22,7 @@ const Subscriptions = () => {
 
   useEffect(() => {
     if (currentUser?.uid)
-      getSubscriptions(currentUser?.uid).then(
+      getSubscriptions(currentUser.uid).then(
         (querySnapshot) => {
           const tempReports: any[] = [];
 

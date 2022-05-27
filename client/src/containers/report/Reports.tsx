@@ -21,7 +21,7 @@ const Reports = () => {
 
   useEffect(() => {
     if (currentUser?.uid)
-      getReports(currentUser?.uid).then(
+      getReports(currentUser.uid).then(
         (querySnapshot) => {
           const tempReports: any[] = [];
 

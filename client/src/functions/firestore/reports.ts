@@ -31,3 +31,12 @@ export const getReport = async (
 
 export const getReports = async (userId: string): Promise<DocumentData> =>
   await getDocs(collection(firestore, `reports/${userId}/savedReports`));
+
+export const deleteReports = async (userId: string): Promise<void> =>
+  await getReports(userId).then(
+    async (reportsSnapshot) =>
+      await reportsSnapshot.forEach(
+        async (report: DocumentData) => await deleteReport(userId, report.id),
+      ),
+    (err) => console.log(err.message),
+  );
