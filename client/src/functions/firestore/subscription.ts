@@ -84,3 +84,16 @@ export const getSubscriptionReport = async (
       `reports/${userId}/subscriptions/${subscriptionId}/reports/${reportId}`,
     ),
   );
+
+export const deleteSubscriptionReport = async (
+  userId: string,
+  subscriptionId: string,
+  reportId: string,
+): Promise<void> => {
+  await deleteDoc(
+    doc(
+      firestore,
+      `reports/${userId}/subscriptions/${subscriptionId}/reports/${reportId}`,
+    ),
+  );
+};
