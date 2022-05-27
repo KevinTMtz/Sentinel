@@ -7,6 +7,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { Dropdown } from '../utils/Dropdown';
 import { ReportSearchQuery } from '../../types/types';
+import { statesAbvs } from '../../values/states';
 
 const searchBarContainer = {
   display: 'flex',
@@ -14,42 +15,6 @@ const searchBarContainer = {
   justifyContent: 'space-between',
   alignItems: 'center',
   gap: '8px',
-};
-
-const statesAbvs: { [key: string]: string } = {
-  all: 'Todos',
-  agu: 'Aguascalientes',
-  bcn: 'Baja California',
-  bcs: 'Baja California Sur',
-  cam: 'Campeche',
-  chp: 'Chiapas',
-  chh: 'Chihuahua',
-  cmx: 'Ciudad de Mexico',
-  coa: 'Coahuila',
-  col: 'Colima',
-  dur: 'Durango',
-  gua: 'Guanajuato',
-  gro: 'Guerrero',
-  hid: 'Hidalgo',
-  jal: 'Jalisco',
-  mex: 'Estado de Mexico',
-  mic: 'Michoacan',
-  mor: 'Morelos',
-  nay: 'Nayarit',
-  nle: 'Nuevo Leon',
-  oax: 'Oaxaca',
-  pue: 'Puebla',
-  que: 'Queretaro',
-  roo: 'Quintana Roo',
-  slp: 'San Luis Potosi',
-  sin: 'Sinaloa',
-  son: 'Sonora',
-  tab: 'Tabasco',
-  tam: 'Tamaulipas',
-  tla: 'Tlaxcala',
-  ver: 'Veracruz',
-  yuc: 'Yucatan',
-  zac: 'Zacatecas',
 };
 
 interface SearchBarProps {
@@ -62,7 +27,7 @@ const SearchBar = (props: SearchBarProps) => (
   <Box sx={searchBarContainer}>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
-        label='Search date'
+        label='Date'
         disableFuture
         value={props.query.until}
         onChange={(value) =>

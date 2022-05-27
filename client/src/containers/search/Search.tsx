@@ -47,7 +47,7 @@ const Search = () => {
 
   const saveReport = async () => {
     if (currentUser?.uid)
-      await createReport(currentUser?.uid, report).then(
+      await createReport(currentUser.uid, report).then(
         (res) => {
           console.log('Uploaded report');
           setReportId(res.id);
@@ -58,8 +58,8 @@ const Search = () => {
 
   const unsaveReport = async () => {
     if (currentUser?.uid)
-      await deleteReport(currentUser?.uid, reportId).then(
-        (res) => {
+      await deleteReport(currentUser.uid, reportId).then(
+        (_) => {
           console.log('Deleted report');
           setReportId('');
         },
@@ -83,7 +83,7 @@ const Search = () => {
 
   const subscribeSearch = async () => {
     if (currentUser?.uid)
-      await createSubscription(currentUser?.uid, {
+      await createSubscription(currentUser.uid, {
         query: query,
         config: subConfig,
       }).then(
@@ -98,8 +98,8 @@ const Search = () => {
 
   const unSubscribeSearch = async () => {
     if (currentUser?.uid)
-      await deleteSubscription(currentUser?.uid, subscriptionId).then(
-        (res) => {
+      await deleteSubscription(currentUser.uid, subscriptionId).then(
+        (_) => {
           setSubscriptionId('');
         },
         (err) => {

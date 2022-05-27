@@ -23,7 +23,7 @@ const ManageReport = () => {
 
   useEffect(() => {
     if (currentUser?.uid)
-      getReport(currentUser?.uid, reportId).then(
+      getReport(currentUser.uid, reportId).then(
         (doc) => {
           setReport(doc.data());
         },
@@ -37,8 +37,8 @@ const ManageReport = () => {
 
   const unsaveReport = async () => {
     if (currentUser?.uid)
-      await deleteReport(currentUser?.uid, reportId).then(
-        (res) => {
+      await deleteReport(currentUser.uid, reportId).then(
+        (_) => {
           console.log('Deleted report');
           navigateBack();
         },

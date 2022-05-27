@@ -65,7 +65,7 @@ const SubscribeBar = (props: SubscribeBarProps) => (
       fullWidth
       variant='contained'
       color={props.buttonColor}
-      onClick={props.subscribe}
+      onClick={() => props.subscribe()}
     >
       {props.buttonText}
     </Button>
