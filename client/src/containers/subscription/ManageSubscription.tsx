@@ -8,8 +8,7 @@ import { firebaseAuth } from '../../config/firebase';
 import { DocumentData } from 'firebase/firestore/lite';
 import { styles } from '../../styles/styles';
 import {
-  deleteSubscription,
-  deleteSubscriptionReport,
+  deleteSubscriptionAndReports,
   getSubscription,
   getSubscriptionReports,
   updateSubscription,
@@ -115,32 +114,15 @@ const ManageSubscription = () => {
       );
   };
 
-  const deleteSubscriptionAndReports = async () => {
+  const deleteSubscription = async () => {
     if (currentUser?.uid)
-      await deleteSubscription(currentUser.uid, subscriptionId).then(
-        async (_) => {
-          reports.forEach(async (report) => {
-            await deleteSubscriptionReport(
-              currentUser.uid,
-              subscriptionId,
-              report.id,
-            ).then(
-              (_) => {
-                console.log('Deleted report');
-              },
-              (err) => console.log(err.message),
-            );
-          });
-
-          navigateBack();
-        },
+      await deleteSubscriptionAndReports(currentUser.uid, subscriptionId).then(
+        async (_) => navigateBack(),
         (err) => console.log(err.message),
       );
   };
 
-  const navigateBack = () => {
-    navigate(-1);
-  };
+  const navigateBack = () => navigate(-1);
 
   return (
     <Box sx={{ ...styles.displayRowsButtons, marginTop: '16px' }}>
@@ -177,7 +159,7 @@ const ManageSubscription = () => {
           variant='contained'
           color='error'
           fullWidth
-          onClick={deleteSubscriptionAndReports}
+          onClick={deleteSubscription}
         >
           Delete subscription and its reports
         </Button>

@@ -97,3 +97,38 @@ export const deleteSubscriptionReport = async (
     ),
   );
 };
+
+export const deleteSubscriptionAndReports = async (
+  userId: string,
+  subscriptionId: any,
+): Promise<void> =>
+  await deleteSubscription(userId, subscriptionId).then(
+    async (_) =>
+      await getSubscriptionReports(userId, subscriptionId).then(
+        async (reportsSnapshot) =>
+          await reportsSnapshot.forEach(
+            async (report: DocumentData) =>
+              await deleteSubscriptionReport(
+                userId,
+                subscriptionId,
+                report.id,
+              ).catch((err) => console.log(err.message)),
+          ),
+        (err) => console.log(err.message),
+      ),
+    (err) => console.log(err.message),
+  );
+
+export const deleteSubscriptionsAndReports = async (
+  userId: string,
+): Promise<void> =>
+  await getSubscriptions(userId).then(
+    async (subscriptionsSnapshot) =>
+      await subscriptionsSnapshot.forEach(
+        async (subscription: DocumentData) =>
+          await deleteSubscriptionAndReports(userId, subscription.id).catch(
+            (err) => console.log(err.message),
+          ),
+      ),
+    (err) => console.log(err.message),
+  );

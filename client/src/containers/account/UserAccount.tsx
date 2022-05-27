@@ -13,6 +13,8 @@ import AccountForm from '../../components/account/AccountForm';
 import SnackBar from '../../components/utils/Snackbar';
 import Spinner from '../../components/utils/Spinner';
 import { firebaseAuth } from '../../config/firebase';
+import { deleteSubscriptionsAndReports } from '../../functions/firestore/subscription';
+import { deleteReports } from '../../functions/firestore/reports';
 
 const UserAccount = () => {
   const navigate = useNavigate();
@@ -84,20 +86,20 @@ const UserAccount = () => {
     setIsLoading(true);
 
     if (currentUser)
-      reauthenticateWithCredential(
+      await reauthenticateWithCredential(
         currentUser,
         EmailAuthProvider.credential(currentUser.email!, password),
       ).then(
         async () =>
-          await updateEmail(currentUser, email)
-            .then(() =>
-              updateProfile(currentUser, {
+          await updateEmail(currentUser, email).then(
+            async () =>
+              await updateProfile(currentUser, {
                 displayName: name,
               })
                 .then(() => navigate('/search'))
                 .catch((error) => showError(error.message)),
-            )
-            .catch((error) => showError(error.message)),
+            (error) => showError(error.message),
+          ),
         (error) => showError(error.message),
       );
   };
@@ -118,16 +120,23 @@ const UserAccount = () => {
     setIsLoading(true);
 
     if (currentUser && currentUser?.uid)
-      reauthenticateWithCredential(
+      await reauthenticateWithCredential(
         currentUser,
         EmailAuthProvider.credential(currentUser.email!, password),
       ).then(
         async () =>
-          await deleteUser(currentUser)
-            .then(() => {
-              navigate('/');
-            })
-            .catch((error) => showError(error.message)),
+          await deleteSubscriptionsAndReports(currentUser.uid).then(
+            async () =>
+              await deleteReports(currentUser.uid).then(
+                async () =>
+                  await deleteUser(currentUser).then(
+                    () => navigate('/'),
+                    (error) => showError(error.message),
+                  ),
+                (error) => showError(error.message),
+              ),
+            (error) => showError(error.message),
+          ),
         (error) => showError(error.message),
       );
   };
