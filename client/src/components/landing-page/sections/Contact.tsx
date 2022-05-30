@@ -43,17 +43,28 @@ const Contact = () => {
               <input
                 type='text'
                 name='user_name'
+                required
                 className='font20 extraBold'
               />
               <label className='font14'>Email:</label>
-              <input type='text' name='email' className='font20 extraBold' />
+              <input
+                type='email'
+                name='email'
+                required
+                className='font20 extraBold'
+              />
               <label className='font14'>Subject:</label>
-              <input type='text' name='subject' className='font20 extraBold' />
+              <input
+                type='text'
+                name='subject'
+                required
+                className='font20 extraBold'
+              />
               <label className='font14'>Message:</label>
               <textarea
-                rows={2}
                 className='font20 extraBold'
                 name='message'
+                required
                 style={{
                   resize: 'none',
                 }}
