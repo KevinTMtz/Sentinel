@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '@mui/material';
 
-import RollerIcon from '../../../assets/svg/Services/RollerIcon';
 import MonitorIcon from '../../../assets/svg/Services/MonitorIcon';
 import BrowserIcon from '../../../assets/svg/Services/BrowserIcon';
 import PrinterIcon from '../../../assets/svg/Services/PrinterIcon';
@@ -11,8 +9,6 @@ import CheckMark from '../../../assets/svg/Checkmark';
 const PricingTable = ({ icon, price, title, text, offers }) => {
   const getIcon = () => {
     switch (icon) {
-      case 'roller':
-        return <RollerIcon />;
       case 'monitor':
         return <MonitorIcon />;
       case 'browser':
@@ -20,7 +16,7 @@ const PricingTable = ({ icon, price, title, text, offers }) => {
       case 'printer':
         return <PrinterIcon />;
       default:
-        return <RollerIcon />;
+        return <BrowserIcon />;
     }
   };
 
@@ -61,9 +57,6 @@ const PricingTable = ({ icon, price, title, text, offers }) => {
               </div>
             ))
           : null}
-      </div>
-      <div style={{ maxWidth: '120px', margin: '30px auto 0 auto' }}>
-        <Button variant='contained'>Buy</Button>
       </div>
     </Wrapper>
   );

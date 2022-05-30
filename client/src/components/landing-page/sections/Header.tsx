@@ -8,12 +8,10 @@ const Header = () => (
   <Wrapper id='home' className='container'>
     <LeftSide className='flexCenter'>
       <div>
-        <h1 className='extraBold font60'>We are Sentinel.</h1>
+        <h1 className='extraBold font60'>We are Sentinel</h1>
         <HeaderP className='font14 semiBold'>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-          rebum.
+          Data analysis platform that guides you in the creation of digital
+          content and facilitates the development of marketing strategies
         </HeaderP>
       </div>
     </LeftSide>
@@ -21,9 +19,11 @@ const Header = () => (
       <ImageWrapper>
         <Img
           className='radius8'
-          src={'//via.placeholder.com/426x607/000000/FFFFFF/?426x607'}
+          src={
+            'https://firebasestorage.googleapis.com/v0/b/sentinel-52dd6.appspot.com/o/main.jpg?alt=media&token=28d8f955-23c9-4467-9e20-11c84e2ac13f'
+          }
           alt='office'
-          style={{ zIndex: 9 }}
+          style={{ zIndex: 9, maxWidth: '60%' }}
         />
         <QuoteWrapper className='flexCenter darkBg radius8'>
           <QuotesWrapper>
@@ -32,15 +32,15 @@ const Header = () => (
           <div>
             <p className='font15 whiteColor'>
               <em>
-                Friends, such as we desire, are dreams and fables. Friendship
-                demands the ability to do without it.
+                If you have today's information, you already know what will
+                happen tomorrow.
               </em>
             </p>
             <p
               className='font14 orangeColor textRight'
               style={{ marginTop: '10px' }}
             >
-              Ralph Waldo Emerson
+              Kevin Torres Martínez
             </p>
           </div>
         </QuoteWrapper>
