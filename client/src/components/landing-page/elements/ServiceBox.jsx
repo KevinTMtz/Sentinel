@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import RollerIcon from '../../../assets/svg/Services/RollerIcon';
 import MonitorIcon from '../../../assets/svg/Services/MonitorIcon';
 import BrowserIcon from '../../../assets/svg/Services/BrowserIcon';
 import PrinterIcon from '../../../assets/svg/Services/PrinterIcon';
@@ -9,8 +8,6 @@ import PrinterIcon from '../../../assets/svg/Services/PrinterIcon';
 const ServiceBox = ({ icon, title, subtitle }) => {
   const getIcon = () => {
     switch (icon) {
-      case 'roller':
-        return <RollerIcon />;
       case 'monitor':
         return <MonitorIcon />;
       case 'browser':
@@ -18,7 +15,7 @@ const ServiceBox = ({ icon, title, subtitle }) => {
       case 'printer':
         return <PrinterIcon />;
       default:
-        return <RollerIcon />;
+        return <BrowserIcon />;
     }
   };
 
@@ -45,7 +42,7 @@ const TitleStyle = styled.h2`
   width: 100%;
   max-width: 300px;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 16px 0;
   @media (max-width: 860px) {
     padding: 20px 0;
   }

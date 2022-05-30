@@ -1,5 +1,5 @@
 export const statesAbvs: { [key: string]: string } = {
-  all: 'Todos',
+  all: 'All',
   agu: 'Aguascalientes',
   bcn: 'Baja California',
   bcs: 'Baja California Sur',

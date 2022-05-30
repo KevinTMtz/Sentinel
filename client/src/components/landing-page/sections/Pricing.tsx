@@ -29,7 +29,6 @@ const Pricing = () => (
               { name: 'Product', cheked: false },
               { name: 'Product Offer', cheked: false },
             ]}
-            action={() => alert('clicked')}
           />
         </TableBox>
         <TableBox>
@@ -60,7 +59,6 @@ const Pricing = () => (
               { name: 'Product', cheked: true },
               { name: 'Product Offer', cheked: true },
             ]}
-            action={() => alert('clicked')}
           />
         </TableBox>
       </TablesWrapper>
