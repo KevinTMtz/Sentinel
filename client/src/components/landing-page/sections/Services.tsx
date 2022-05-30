@@ -10,7 +10,7 @@ const Services = () => (
     <div style={{ padding: '60px 0' }}>
       <div className='container'>
         <HeaderInfo>
-          <h1 className='font40 extraBold'>Our Awesome Services</h1>
+          <h1 className='font40 extraBold'>Our awesome services</h1>
           <p className='font14'>
             Sentinel offers a variety of services in order to accommodate what
             you need and what you are looking for.
