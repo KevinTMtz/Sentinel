@@ -1,7 +1,11 @@
 # Amplify commands
 
 
+0. Check status
 
+```bash
+    amplify status
+```
 
 1. Delete api resource
 
@@ -30,4 +34,10 @@ amplify add function
 
 ```bash
 amplify update api
+```
+
+5. Upload resources cloud
+
+```bash
+amplify push
 ```

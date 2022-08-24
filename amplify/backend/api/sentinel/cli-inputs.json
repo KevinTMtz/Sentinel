@@ -1,8 +1,8 @@
 {
   "version": 1,
   "paths": {
-    "/node": {
-      "name": "/node",
+    "/v1/node": {
+      "name": "/v1/node",
       "lambdaFunction": "nodeTest",
       "permissions": {
         "setting": "open"

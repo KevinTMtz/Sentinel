@@ -8,7 +8,7 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "api": {
-        "sentinelApi": {
+        "sentinel": {
             "RootUrl": "string",
             "ApiName": "string",
             "ApiId": "string"

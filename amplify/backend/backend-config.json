@@ -8,7 +8,7 @@
     }
   },
   "api": {
-    "sentinelApi": {
+    "sentinel": {
       "service": "API Gateway",
       "providerPlugin": "awscloudformation",
       "dependsOn": [

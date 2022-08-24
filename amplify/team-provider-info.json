@@ -1,20 +1,20 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-sentinel-dev-163037-authRole",
-      "UnauthRoleArn": "arn:aws:iam::772710471193:role/amplify-sentinel-dev-163037-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::772710471193:role/amplify-sentinel-dev-163037-authRole",
+      "AuthRoleName": "amplify-sentinel-dev-231749-authRole",
+      "UnauthRoleArn": "arn:aws:iam::772710471193:role/amplify-sentinel-dev-231749-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::772710471193:role/amplify-sentinel-dev-231749-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-sentinel-dev-163037-deployment",
-      "UnauthRoleName": "amplify-sentinel-dev-163037-unauthRole",
-      "StackName": "amplify-sentinel-dev-163037",
-      "StackId": "arn:aws:cloudformation:us-east-1:772710471193:stack/amplify-sentinel-dev-163037/676dd430-2198-11ed-863b-0a367c8ffcc1",
-      "AmplifyAppId": "d3ffpf7zwxhwrx"
+      "DeploymentBucketName": "amplify-sentinel-dev-231749-deployment",
+      "UnauthRoleName": "amplify-sentinel-dev-231749-unauthRole",
+      "StackName": "amplify-sentinel-dev-231749",
+      "StackId": "arn:aws:cloudformation:us-east-1:772710471193:stack/amplify-sentinel-dev-231749/9e8b57e0-2363-11ed-ab7d-0e5a10538aad",
+      "AmplifyAppId": "d3r8ybb45100c1"
     },
     "categories": {
       "function": {
         "nodeTest": {
-          "deploymentBucketName": "amplify-sentinel-dev-163037-deployment",
+          "deploymentBucketName": "amplify-sentinel-dev-231749-deployment",
           "s3Key": "amplify-builds/nodeTest-4c6f49395935342f7a6f-build.zip"
         }
       }
