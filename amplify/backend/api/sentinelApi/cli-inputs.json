@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/node": {
+      "name": "/node",
+      "lambdaFunction": "nodeTest",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
