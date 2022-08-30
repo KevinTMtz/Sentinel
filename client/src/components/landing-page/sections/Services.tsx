@@ -72,7 +72,7 @@ const Services = () => (
               <AddRightImg
                 className='radius8'
                 src={
-                  'https://firebasestorage.googleapis.com/v0/b/sentinel-52dd6.appspot.com/o/second.jpg?alt=media&token=707d95df-ac14-49c3-8216-25c6a47c573f'
+                  'https://amplify-sentinel-dev-231749-static-images.s3.us-east-2.amazonaws.com/second.jpg'
                 }
                 alt='office'
               />

@@ -20,7 +20,7 @@ const Header = () => (
         <Img
           className='radius8'
           src={
-            'https://firebasestorage.googleapis.com/v0/b/sentinel-52dd6.appspot.com/o/main.jpg?alt=media&token=28d8f955-23c9-4467-9e20-11c84e2ac13f'
+            'https://amplify-sentinel-dev-231749-static-images.s3.us-east-2.amazonaws.com/main.jpg'
           }
           alt='office'
           style={{ zIndex: 9, maxWidth: '60%' }}
