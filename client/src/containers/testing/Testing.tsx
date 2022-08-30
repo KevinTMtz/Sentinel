@@ -13,7 +13,7 @@ const Testing: React.FC = () => {
     function retrieveData(){
         fetch(api_serverless+'/node')
         .then(response => response.json())
-        .then(data =>setInfo(data.name))
+        .then(data =>setInfo(data.Item.name))
         .catch(() => setInfo("Error de permisos :("));
     }
 
