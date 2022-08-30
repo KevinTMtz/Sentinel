@@ -1,17 +1,15 @@
+const getItem = require('./tableInfo');
 
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-    return {
-        statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  }, 
-        body: JSON.stringify('Hello from Lambda!'),
-    };
+    const data = await getItem()
+    try {
+        const data = await getItem()
+        return { body: JSON.stringify(data) }
+      } catch (err) {
+        return { error: err }
+      }
 };

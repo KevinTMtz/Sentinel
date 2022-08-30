@@ -41,3 +41,35 @@ amplify update api
 ```bash
 amplify push
 ```
+
+# Functions
+
+### Adding packages
+
+1. Go to amplify/backend/function/NAME/src
+
+```bash
+npm install PACKAGE
+```
+
+# Testing
+
+## Functions
+
+1. On root amplify
+
+```bash
+amplify mock function NAME
+```
+
+2. Select src/event.json (here are the params needed to execute lambda if needed)
+
+3. Run :)
+
+## api
+
+1. On root amplify
+
+```bash
+amplify mock api
+```
