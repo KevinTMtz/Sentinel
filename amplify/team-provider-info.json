@@ -15,7 +15,7 @@
       "function": {
         "nodeTest": {
           "deploymentBucketName": "amplify-sentinel-dev-231749-deployment",
-          "s3Key": "amplify-builds/nodeTest-4c6f49395935342f7a6f-build.zip"
+          "s3Key": "amplify-builds/nodeTest-704e4b437a54434f6738-build.zip"
         }
       }
     }

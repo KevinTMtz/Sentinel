@@ -31,6 +31,7 @@ import ManageReport from './containers/report/ManageReport';
 import Subscriptions from './containers/subscription/Subscriptions';
 import ManageSubscription from './containers/subscription/ManageSubscription';
 import ManageSubscriptionReport from './containers/subscription/ManageSubscriptionReport';
+import Testing from './containers/testing/Testing';
 
 const App = () => {
   const navigate = useNavigate();
@@ -158,7 +159,7 @@ const App = () => {
 
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
-
+            <Route path='testing' element={<Testing/>}/>
             <Route
               path='account'
               element={

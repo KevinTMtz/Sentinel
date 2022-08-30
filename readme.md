@@ -1,3 +1,16 @@
+# Uploading
+
+0. Merge PR to main
+
+1. Wait for the AWS amplify pipe finishes
+
+2. If there are changes on  the backend run:
+
+```bash
+amplify push
+```
+
+
 # Amplify commands
 
 
@@ -30,7 +43,9 @@ Seguir instrucciones
 amplify add function
 ```
 
-4. Add api resource
+Add permissions on resources AWS on function/custom-policies.lson
+
+4. Add api resource (add v1 prefix )
 
 ```bash
 amplify update api
